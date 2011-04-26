@@ -26,6 +26,11 @@ class ColumnTest < MiniTest::Unit::TestCase
     assert_equal ['d', 'c', 'b'], column.values_in(stub_row)
   end
   
+  def test_virtual
+    column = Column.new(:foo) { 'a' }
+    assert_equal 'a', column.values_in(stub_row)
+  end
+  
   def test_strip_whitespace
     column = Column.new(:foo, 0)
     assert_equal 'a', column.values_in(['  a  '])

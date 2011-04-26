@@ -8,11 +8,14 @@ module Conformist
       @columns ||= []
     end
     
-    def options value = nil
-      @options = value if value
-      @options ||= {}
+    def option value
+      options.merge! value
     end
     
+    def options
+      @options ||= {}
+    end
+            
     def foreach path, &block
       CSV.foreach(path, options) { |row| yield Row.new(columns, row).to_hash }
     end
