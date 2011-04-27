@@ -26,11 +26,11 @@ class BaseTest < MiniTest::Unit::TestCase
   
   def test_foreach
     rows = [
-      {:name => "CRAFERS",         :callsign => "ABS2",    :latitude => "34 58 49S",     :signtal_type => "digital"},
-      {:name => "CRAFERS",         :callsign => "SAS7",    :latitude => "34 58 57S",     :signtal_type => "digital"},
-      {:name => "CRAFERS",         :callsign => "NWS9",    :latitude => "34 59 02S",     :signtal_type => "digital"},
-      {:name => "CRAFERS",         :callsign => "ADS10",   :latitude => "34 59 02S",     :signtal_type => "digital"},
-      {:name => "CRAFERS",         :callsign => "ADS10",   :latitude => "34 58 57S",     :signtal_type => "digital"}
+      {:name => "CRAFERS", :callsign => "ABS2",  :latitude => "34 58 49S", :signtal_type => "digital"},
+      {:name => "CRAFERS", :callsign => "SAS7",  :latitude => "34 58 57S", :signtal_type => "digital"},
+      {:name => "CRAFERS", :callsign => "NWS9",  :latitude => "34 59 02S", :signtal_type => "digital"},
+      {:name => "CRAFERS", :callsign => "ADS10", :latitude => "34 59 02S", :signtal_type => "digital"},
+      {:name => "CRAFERS", :callsign => "ADS10", :latitude => "34 58 57S", :signtal_type => "digital"}
     ]
     ACMA.load(fixture('acma.csv')).foreach do |row|
       assert_equal rows.shift, row
