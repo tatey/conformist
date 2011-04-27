@@ -107,7 +107,19 @@ end
 
 ## Compatibility
 
-* 1.9.2p180
+* 1.9.2-p180
+* 1.8.7-p334
+* jruby-1.6.1
+
+## Contributing
+
+Patches welcome! 
+
+1. Fork the repository
+2. Create a topic branch
+3. Write tests and make changes
+4. Make sure the tests pass by running `rake`
+5. Push and send a pull request on GitHub
 
 ## Copyright
 

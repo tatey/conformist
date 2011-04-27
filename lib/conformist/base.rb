@@ -7,12 +7,13 @@ module Conformist
         attr_accessor :path
       end
     end
-    
-    # Enumerate over each row from multiple input files.
+
+    # Enumerate over each row in the input file.
     #
     # Example:
     #
-    #   Conformist::Base.foreach Input1.load('input.csv'), Input2.load('input.csv') do |row|
+    #   input1 = Input1.load 'input1.csv'
+    #   input1.foreach do |row|
     #     Model.create! row
     #   end
     #

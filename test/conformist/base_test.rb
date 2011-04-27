@@ -15,7 +15,7 @@ class BaseTest < MiniTest::Unit::TestCase
     @klass.column :a, 0
     @klass.column :b, 1
     assert_equal 2, @klass.columns.size
-    assert_instance_of Conformist::Column, @klass.columns.sample
+    assert_instance_of Conformist::Column, @klass.columns[rand(2)]
   end
   
   def test_load
