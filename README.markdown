@@ -1,77 +1,101 @@
 # Conformist 
 
-Let multiple, different input files conform to a single interface without rewriting your parser. This project is a work-in-progress.
+Conformist lets you bend CSVs to your will. Let multiple, different input files conform to a single interface without rewriting your parser each time.
+
+Motivation for this project came from the desire to simplify importing data from various government organisations into [Antenna Mate](http://antennamate.com). The data from each government was similar, but had completely different formatting. Some pieces of data needed preprocessing while others simply needed to be concatenated together. I did not want to write a new parser for each new government organisation. Instead, I created Conformist.
 
 ## Usage
 
-TODO
+You create a Ruby class, mix-in `Conformist::Base` and declare how an input file should map to a single interface.
 
-## Example
+``` ruby
+require 'conformist'
 
-We have two different input files that we want to conform to the same interface. Day1.csv has a column for each of the attributes and uses a comma as the delimiter. In contrast, File2.txt combines the first and last names into a single column and uses a pipe as the delimiter.
-
-### Input
-
-Data is for the first three talks of days 1 and 2 from [RedDotRubyConf](http://reddotrubyconf.com/), Singapore.
-
-#### day1.csv
-
-    "Andy","Croll","Welcome"
-    "Yukihiro","Matsumoto","The Future of Ruby"
-    "Ian","McFarland","Agile the Pivotal Way"
-
-#### day2.txt
-
-    "Jasong Ong"|"Welcome Back"
-    "Dave Thomas"|"Pragmatic Programmers"
-    "Tom Preston-Warner"|"Advanced Git Techniques"
-
-### Ruby
-
-    require 'conformist'
-
-    class Day1
-      include Conformist::Base
-      
-      option :col_sep => ','
-      option :quote_char => '"'
-  
-      column :name, 0, 1 do |values|
-        values.map { |v| v.upcase } * ' '
-      end
-      column :talk, 2
-      column :day do
-        '1'
-      end
-    end
-
-    class Day2
-      include Conformist::Base
-      
-      option :col_sep => '|'
-      option :quote_char => '"'
-
-      column :name, 0 do |value|
-        value.upcase
-      end
-      column :talk, 1
-      column :day do
-        '2'
-      end  
-    end
-
-    Conformist.foreach File1.load('day1.csv'), File2.load('day2.txt') do |row|
-      puts row      
-    end
+class Citizen1
+  include Conformist::Base
     
-    # ... the above would produce the following output...
+  column :name, 0, 1
+  column :address, 2 do |value|
+    value.upcase
+  end
+end
 
-    # "{:name => 'ANDY CROLL',         :talk => 'Welcome',                 :day => '1'}"
-    # "{:name => 'YUKIHIRO MATSUMOTO', :talk => 'The Future of Ruby',      :day => '1'}"
-    # "{:name => 'IAN  MCFARLAND',     :talk => 'Agile the Pivotal Way',   :day => '1'}"
-    # "{:name => 'JASON ONG',          :talk => 'Welcome Back',            :day => '2'}"
-    # "{:name => 'DAVE THOMAS',        :talk => 'Pragmatic Programmers',   :day => '2'}"
-    # "{:name => 'TOM PRESTON-WARNER', :talk => 'Advanced Git Techniques', :day => '2'}"
+class Citizen2
+  include Conformist::Base
+  
+  column :name, 0
+  column :address, 1
+end
+```
+
+Load up your definitions and enumerate over each row in the input file.
+
+``` ruby
+Conformist.foreach Citizen1.load('citizens1.csv'), Citizen2.load('citizens2.csv') do |row|
+  Citizen.create! row
+end
+```
+
+Each object passed into the block will be a hash. Perfect for passing to a model to save into a datastore (Or whatever tickles your fancy).
+
+### Option
+
+Conformist uses CSV (Formally FasterCSV) to perform the heavy lifting. You can declare options that should be passed to CSV at runtime. It is safe to call `option` multiple times.
+
+``` ruby
+option :col_sep => ','
+option :quote_char => '"'
+```
+
+### One Column
+
+Maps the first column in the input file to the `:first_name` key-value pair. Indexing starts at zero.
+
+``` ruby
+column :first_name, 0
+```
+
+### Many Columns
+
+Maps the first and second columns in the input file to the `:name` key-value pair and implicitly concatenates the values.
+
+``` ruby
+column :name, 0, 1
+```
+
+Indexing is completely arbitrary and you can map any combination.
+
+``` ruby
+column :name_and_address, 0, 2
+```
+
+### Preprocessing
+
+Sometimes you will want to manipulate values before they're conformed. You can pass a block and get access to the values. The return value of the expression becomes the conformed output.
+
+``` ruby
+column :name, 0, 1 do |values|
+  values.map { |v| v.upcase } * ' '
+end
+```
+
+Works with one column too. Instead of getting an array of strings, you get one string.
+
+``` ruby
+column :first_name, 0 do |value|
+  value.upcase
+end
+```
+
+### Virtual Columns
+
+Declare a column you want included in the conformed output that is not based on the input file. This is useful when you need to set values based on the conformist definition. 
+
+``` ruby
+column :day do 
+  1
+end
+```
 
 ## Compatibility
 
