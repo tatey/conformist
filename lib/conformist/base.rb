@@ -1,12 +1,22 @@
 module Conformist
   module Base
-    def self.included klass
-      klass.class_eval do
+    def self.included base
+      base.class_eval do
         extend ClassMethods
+        
         attr_accessor :path
       end
     end
     
+    # Enumerate over each row from multiple input files.
+    #
+    # Example:
+    #
+    #   Conformist::Base.foreach Input1.load('input.csv'), Input2.load('input.csv') do |row|
+    #     Model.create! row
+    #   end
+    #
+    # Returns nothing.
     def foreach &block
       CSV.foreach(path, self.class.options) do |row| 
         yield Row.new(self.class.columns, row).to_hash

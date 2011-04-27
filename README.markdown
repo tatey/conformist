@@ -4,6 +4,14 @@ Conformist lets you bend CSVs to your will. Let multiple, different input files 
 
 Motivation for this project came from the desire to simplify importing data from various government organisations into [Antenna Mate](http://antennamate.com). The data from each government was similar, but had completely different formatting. Some pieces of data needed preprocessing while others simply needed to be concatenated together. I did not want to write a new parser for each new government organisation. Instead, I created Conformist.
 
+## Installation
+
+Conformist is available from rubygems.org.
+
+``` sh
+$ gem install conformist
+```
+
 ## Usage
 
 You create a Ruby class, mix-in `Conformist::Base` and declare how an input file should map to a single interface.
