@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.8.7'
   
   s.add_development_dependency 'rake', '~> 0.8.7'
-  s.add_development_dependency 'minitest', '~> 2.1.0' if RUBY_VERSION < '1.9.0'
-  s.add_dependency 'fastercsv', "~> 1.5.4" if RUBY_VERSION < '1.9.0'
+  s.add_development_dependency 'minitest', '~> 2.1.0'
+  s.add_dependency 'fastercsv', "~> 1.5.4"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

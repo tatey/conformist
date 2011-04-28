@@ -36,8 +36,8 @@ class ColumnTest < MiniTest::Unit::TestCase
     assert_equal 'a', column.values_in(['  a  '])
   end
   
-  def test_nil_empty_string
+  def test_nil
     column = Conformist::Column.new(:foo, 0)
-    assert_equal '', column.values_in([])
+    assert_nil column.values_in([])
   end
 end

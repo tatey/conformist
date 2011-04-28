@@ -18,7 +18,7 @@ module Conformist
     #
     # Returns preprocessed value.
     def values_in row      
-      values = indexes.map { |index| (row[index] || String.new).strip }
+      values = indexes.map { |index| row[index] ? row[index].strip : nil }
       values = values.first if values.size == 1
       if preprocessor.respond_to? :call
         preprocessor.call values
