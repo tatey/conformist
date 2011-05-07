@@ -23,7 +23,7 @@ class Citizen1
   include Conformist::Base
     
   column :name, 0, 1
-  column :address, 2 do |value|
+  column :city, 2 do |value|
     value.upcase
   end
 end
@@ -32,7 +32,7 @@ class Citizen2
   include Conformist::Base
   
   column :name, 0
-  column :address, 1
+  column :city, 1
 end
 ```
 
@@ -74,7 +74,7 @@ column :name, 0, 1
 Indexing is completely arbitrary and you can map any combination.
 
 ``` ruby
-column :name_and_address, 0, 2
+column :name_and_city 0, 2
 ```
 
 ### Preprocessing
@@ -104,6 +104,37 @@ column :day do
   1
 end
 ```
+
+### Inheritance
+
+Inheriting from a class which mixes in Conformist::Base gives you access to all of the superclasses' columns.
+
+``` ruby
+class Citizen
+  include Conformist::Base
+
+  column :name, 0, 1
+end
+
+class Adult < Citizen
+  column :category do
+    'Adult'
+  end
+end
+
+class Child < Citizen
+  column :category do
+    'Child'
+  end
+end
+
+Adult.load('adults.csv').foreach do |row|
+  row # => {:name => 'Tate Johnson', :category => 'Adult}
+end
+```
+## Example
+
+* https://gist.github.com/949576
 
 ## Compatibility
 

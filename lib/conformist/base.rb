@@ -3,7 +3,6 @@ module Conformist
     def self.included base
       base.class_eval do
         extend ClassMethods
-        
         attr_accessor :path
       end
     end
@@ -30,7 +29,11 @@ module Conformist
       end
 
       def columns
-        @columns ||= []
+        @columns ||= if superclass.ancestors.include? Conformist::Base
+          superclass.columns.dup
+        else
+          []
+        end
       end
 
       def option value

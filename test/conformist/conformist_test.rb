@@ -14,7 +14,7 @@ class ConformistTest < MiniTest::Unit::TestCase
       {:name => "SACRAMENTO, CA",  :callsign => "KCSO-LD", :latitude => "38 7 10.00 N",  :signtal_type => "digital"},
       {:name => "LOS ANGELES, CA", :callsign => "KVTU-LP", :latitude => "34 13 38.00 N", :signtal_type => "digital"}
     ]
-    Conformist.foreach ACMA.load(fixture('acma.csv')), FCC.load(fixture('fcc.txt')) do |row|
+    Conformist.foreach ACMA::Digital.load(fixture('acma.csv')), FCC.load(fixture('fcc.txt')) do |row|
       assert_equal rows.shift, row
     end
   end

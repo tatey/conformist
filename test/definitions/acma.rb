@@ -1,16 +1,24 @@
-class FCC
+class ACMA
   include Conformist::Base
   
-  option :col_sep => '|'
-   
-  column :name, 10, 11 do |values|
-    "#{values[0].upcase}, #{values[-1]}"
+  option :col_sep => ','
+  option :quote_char => '"'
+
+  column :name, 11 do |value| 
+    value.match(/[A-Z]+$/)[0].upcase
   end
   column :callsign, 1
-  column :latitude, 20, 21, 22, 19 do |values|
-    values.join(' ')
-  end
-  column :signtal_type do
-    'digital'
+  column :latitude, 15
+end
+
+class ACMA::Digital < ACMA
+  column :signtal_type do 
+     'digital'
+   end
+ end
+
+class ACMA::Analogue < ACMA
+  column :signtal_type do 
+    'analogue'
   end
 end

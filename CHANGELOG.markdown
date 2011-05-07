@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## 0.0.2
+## 0.0.3 / 2011-05-07
+
+* Inheriting from a class which mixes in Conformist::Base gives you access to all of the superclasses' columns.
+
+## 0.0.2 / 2011-04-28
 
 * Column#values_in will be nil if the index is out of range rather than an empty string. This is consistent with CSV
 * Fixed 1.8.7 and JRuby dependancies. Gemspec will not let you specify dependancies based on the version of Ruby. Everyone gets it
