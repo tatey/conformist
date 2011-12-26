@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 1.8.7'
   
-  s.add_development_dependency 'rake', '~> 0.8.7'
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'minitest', '~> 2.1.0'
   s.add_dependency 'fastercsv', "~> 1.5.4"
 
