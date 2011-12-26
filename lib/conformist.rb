@@ -6,6 +6,7 @@ end
 
 require 'conformist/base'
 require 'conformist/column'
+require 'conformist/definition'
 require 'conformist/row'
 
 module Conformist
