@@ -4,6 +4,8 @@ require 'conformist'
 require 'definitions/acma'
 require 'definitions/fcc'
 
+include Conformist
+
 def stub_row
   ('a'..'d').to_a
 end
