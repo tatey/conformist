@@ -1,8 +1,8 @@
 # Conformist 
 
-Work in progress.
+Caution! Work in progress.
 
-# 1.0
+# 1.0.0
 
 ## Goals
 
@@ -25,7 +25,7 @@ end
 citizen.conform []
 ```
 
-Class definition. Declarative and maintains compatibility with pre 1.0.
+Class definition. Declarative and maintains compatibility with earlier versions.
 
 ``` ruby
 class Citizen
@@ -38,7 +38,14 @@ end
 Citizen.new.conform []
 ```
 
-# Pre 1.0
+Lazy. Collection is not evaluated until you call #each or #map.
+
+``` ruby
+definition.conform(collection).each
+definition.conform(collection).map 
+```
+
+# 0.0.3
 
 Conformist lets you bend CSVs to your will. Let multiple, different input files conform to a single interface without rewriting your parser each time.
 

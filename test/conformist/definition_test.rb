@@ -3,6 +3,7 @@ require 'helper'
 class DefinitionTest < MiniTest::Unit::TestCase
   def test_initialize_sets_attributes
     definition = Definition.new
+    assert_equal Row, definition.conformer
     assert_empty definition.columns
   end
   
@@ -14,6 +15,14 @@ class DefinitionTest < MiniTest::Unit::TestCase
     assert_equal 2, definition.size
   end
   
+  def test_each
+    definition = Definition.new
+    definition.columns = ['a', 'b']
+    definition.each do |letter|
+      assert_instance_of String, letter
+    end
+  end
+  
   def test_column
     definition = Definition.new
     definition.column :a, 0
@@ -21,6 +30,14 @@ class DefinitionTest < MiniTest::Unit::TestCase
     assert_equal 2, definition.size
   end
   
+  def test_conform
+    definition = Definition.new
+    definition.conformer = lambda { |definition, value| value }
+    assert definition.conform([]).respond_to?(:each)
+    assert definition.conform([]).respond_to?(:map)
+    assert_equal [2, 4], definition.conform([1, 2]).map { |value| value * 2 }
+  end
+    
   def test_reference
     definition = Definition.new
     definition.columns = ['a', 'b']
