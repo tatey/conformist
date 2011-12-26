@@ -9,6 +9,7 @@ Work in progress.
 * Remove dependancy on IO. Should be able to work with anything that quacks 
 like a collection. We shouldn't care how that collection got there.
 * Anonymous, inline definitions. No need to create an entire class.
+* Lazy. Should work well with large collections.
 * Quick and easy way of reading a file from disk. This is the most common use case.
 
 ## Examples
