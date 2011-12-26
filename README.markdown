@@ -35,7 +35,7 @@ class Citizen
 end
 
 Citizen.new.conform []
-``` ruby
+```
 
 # Pre 1.0
 
