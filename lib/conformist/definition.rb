@@ -6,8 +6,11 @@ module Conformist
     
     delegate [:[], :size] => :columns
     
-    def initialize
+    def initialize &block
       self.columns = []
+      if block
+        instance_eval &block 
+      end
     end
 
     def column *args
