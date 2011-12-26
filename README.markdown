@@ -1,5 +1,44 @@
 # Conformist 
 
+Work in progress.
+
+# 1.0
+
+## Goals
+
+* Remove dependancy on IO. Should be able to work with anything that quacks 
+like a collection. We shouldn't care how that collection got there.
+* Anonymous, inline definitions. No need to create an entire class.
+* Quick and easy way of reading a file from disk. This is the most common use case.
+
+## Examples
+
+Anonymous definition
+
+``` ruby
+citizen = Conformist.new do |c|
+  c.column :name, 0, 1
+  c.column :email, 2
+end
+
+citizen.conform []
+```
+
+Class definition. Declarative and maintains compatibility with pre 1.0.
+
+``` ruby
+class Citizen
+  include Conformist
+  
+  column :name, 0, 1
+  column :email
+end
+
+Citizen.new.conform []
+``` ruby
+
+# Pre 1.0
+
 Conformist lets you bend CSVs to your will. Let multiple, different input files conform to a single interface without rewriting your parser each time.
 
 Motivation for this project came from the desire to simplify importing data from various government organisations into [Antenna Mate](http://antennamate.com). The data from each government was similar, but had completely different formatting. Some pieces of data needed preprocessing while others simply needed to be concatenated together. I did not want to write a new parser for each new government organisation. Instead, I created Conformist.
