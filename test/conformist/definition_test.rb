@@ -30,11 +30,15 @@ class DefinitionTest < MiniTest::Unit::TestCase
     assert_equal 2, definition.size
   end
   
-  def test_conform
+  def test_conform_returns_enumerable
     definition = Definition.new
-    definition.conformer = lambda { |definition, value| value }
     assert definition.conform([]).respond_to?(:each)
     assert definition.conform([]).respond_to?(:map)
+  end
+
+  def test_conform_calls_conformers_call_method
+    definition = Definition.new
+    definition.conformer = lambda { |definition, value| value }
     assert_equal [2, 4], definition.conform([1, 2]).map { |value| value * 2 }
   end
     
