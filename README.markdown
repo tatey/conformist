@@ -17,9 +17,9 @@ like a collection. We shouldn't care how that collection got there.
 Anonymous definition
 
 ``` ruby
-citizen = Conformist.new do |c|
-  c.column :name, 0, 1
-  c.column :email, 2
+citizen = Conformist.new do
+  column :name, 0, 1
+  column :email, 2
 end
 
 citizen.conform []
