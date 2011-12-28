@@ -1,13 +1,19 @@
 require 'helper'
 
 class DefinitionTest < MiniTest::Unit::TestCase
-  def test_initialize_sets_attributes
+  def test_initialize
     definition = Definition.new
     assert_equal Builder, definition.builder
     assert_empty definition.columns
   end
   
-  def test_initialize_takes_a_block_for_setup
+  def test_initialize_with_definition
+    parent = Definition.new { column :a, 0 }
+    child  = Definition.new(parent) { column :b, 1 }
+    assert_equal 2, child.columns.size
+  end
+  
+  def test_initialize_with_block
     definition = Definition.new do
       column :a, 0
       column :b, 1
