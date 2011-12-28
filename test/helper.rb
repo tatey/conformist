@@ -1,8 +1,5 @@
-require 'minitest/autorun'
-
 require 'conformist'
-require 'definitions/acma'
-require 'definitions/fcc'
+require 'minitest/autorun'
 
 include Conformist
 
