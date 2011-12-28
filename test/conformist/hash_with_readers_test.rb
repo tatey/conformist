@@ -9,8 +9,10 @@ class HashWithReadersTest < MiniTest::Unit::TestCase
     hash = HashWithReaders.new
     assert hash.respond_to?(:[])
     assert hash.respond_to?(:[]=)
-    assert hash.respond_to?(:delete)
-    assert hash.respond_to?(:merge)
+  end
+  
+  def test_merge
+    skip
   end
   
   def test_readers

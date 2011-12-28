@@ -4,10 +4,16 @@ module Conformist
     
     attr_accessor :store
     
-    delegate [:[], :[]=, :delete, :merge] => :store
+    delegate [:[], :[]=] => :store
     
     def initialize
       self.store = {}
+    end
+    
+    def merge other
+      self.class.new.tap do |instance|
+        instance.store = store.merge other
+      end
     end
     
   protected

@@ -2,13 +2,13 @@ module Conformist
   class Definition
     extend Forwardable
     
-    attr_accessor :columns, :conformer
+    attr_accessor :builder, :columns
     
-    delegate [:[], :each, :size] => :columns
+    delegate [:[], :each, :size] => :columns # TODO: Probably remove these methods
     
     def initialize &block
-      self.columns   = []
-      self.conformer = Row
+      self.builder = Builder
+      self.columns = []
       if block
         instance_eval &block 
       end
@@ -18,12 +18,12 @@ module Conformist
       columns << Column.new(*args)
     end
     
-    def conform rows
+    def conform enumerables
       Enumerator.new do |yielder|
-        rows.each do |row|
-          yielder.yield conformer.call(self, row)
+        enumerables.each do |enumerable|
+          yielder.yield builder.call(self, enumerable)
         end
       end
-    end
+    end    
   end
 end

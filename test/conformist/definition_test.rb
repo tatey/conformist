@@ -3,7 +3,7 @@ require 'helper'
 class DefinitionTest < MiniTest::Unit::TestCase
   def test_initialize_sets_attributes
     definition = Definition.new
-    assert_equal Row, definition.conformer
+    assert_equal Builder, definition.builder
     assert_empty definition.columns
   end
   
@@ -36,9 +36,9 @@ class DefinitionTest < MiniTest::Unit::TestCase
     assert definition.conform([]).respond_to?(:map)
   end
 
-  def test_conform_calls_conformers_call_method
+  def test_conform_calls_builders_call_method
     definition = Definition.new
-    definition.conformer = lambda { |definition, value| value }
+    definition.builder = lambda { |definition, value| value }
     assert_equal [2, 4], definition.conform([1, 2]).map { |value| value * 2 }
   end
     
