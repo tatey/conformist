@@ -2,6 +2,7 @@ require 'helper'
 
 class HashWithReadersTest < MiniTest::Unit::TestCase
   def test_initialize
+    assert_equal({:a => 1}, HashWithReaders.new({:a => 1}).attributes)
     assert_empty HashWithReaders.new.attributes
   end
   

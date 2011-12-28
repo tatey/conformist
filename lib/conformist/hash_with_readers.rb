@@ -6,8 +6,8 @@ module Conformist
     
     delegate [:[], :[]=] => :attributes
     
-    def initialize
-      self.attributes = {}
+    def initialize attributes = {}
+      self.attributes = attributes
     end
     
     def merge other
