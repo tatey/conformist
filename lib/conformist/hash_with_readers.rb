@@ -4,7 +4,7 @@ module Conformist
     
     attr_accessor :attributes
     
-    delegate [:[], :[]=] => :attributes
+    delegate [:[], :[]=, :fetch, :key?] => :attributes
     
     def initialize attributes = {}
       self.attributes = attributes
@@ -19,11 +19,11 @@ module Conformist
   protected
   
     def respond_to_missing? method, include_private
-      attributes.key?(method) || super
+      key?(method) || super
     end
     
     def method_missing method, *args, &block
-      attributes.fetch method, super
+      fetch(method) { super }
     end
   end
 end

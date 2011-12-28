@@ -10,6 +10,8 @@ class HashWithReadersTest < MiniTest::Unit::TestCase
     hash = HashWithReaders.new
     assert hash.respond_to?(:[])
     assert hash.respond_to?(:[]=)
+    assert hash.respond_to?(:fetch)
+    assert hash.respond_to?(:key?)
   end
   
   def test_merge
@@ -21,9 +23,11 @@ class HashWithReadersTest < MiniTest::Unit::TestCase
   
   def test_readers
     hash = HashWithReaders.new
-    hash[:a] = nil
-    hash[:c_d] = nil
-    assert hash.respond_to?(:a)
+    hash[:a] = 1
+    hash[:c_d] = 1
+    assert hash.respond_to?(:a)    
+    assert_equal 1, hash.a
     assert hash.respond_to?(:c_d)
+    assert_equal 1, hash.c_d
   end
 end

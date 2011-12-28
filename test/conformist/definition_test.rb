@@ -8,9 +8,12 @@ class DefinitionTest < MiniTest::Unit::TestCase
   end
   
   def test_initialize_with_definition
-    parent = Definition.new { column :a, 0 }
-    child  = Definition.new(parent) { column :b, 1 }
-    assert_equal 2, child.columns.size
+    parent = Definition.new.tap { |d| d.columns = [0] }
+    child1 = Definition.new(parent).tap { |d| d.columns << 1 }
+    child2 = Definition.new(parent).tap { |d| d.columns << 2 }
+    assert_equal [0], parent.columns
+    assert_equal [0, 1], child1.columns
+    assert_equal [0, 2], child2.columns
   end
   
   def test_initialize_with_block
