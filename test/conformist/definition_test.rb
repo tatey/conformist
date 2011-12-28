@@ -12,22 +12,14 @@ class DefinitionTest < MiniTest::Unit::TestCase
       column :a, 0
       column :b, 1
     end
-    assert_equal 2, definition.size
-  end
-  
-  def test_each
-    definition = Definition.new
-    definition.columns = ['a', 'b']
-    definition.each do |letter|
-      assert_instance_of String, letter
-    end
+    assert_equal 2, definition.columns.size
   end
   
   def test_column
     definition = Definition.new
     definition.column :a, 0
     definition.column :b, 1
-    assert_equal 2, definition.size
+    assert_equal 2, definition.columns.size
   end
   
   def test_conform_returns_enumerable
@@ -40,18 +32,5 @@ class DefinitionTest < MiniTest::Unit::TestCase
     definition = Definition.new
     definition.builder = lambda { |definition, value| value }
     assert_equal [2, 4], definition.conform([1, 2]).map { |value| value * 2 }
-  end
-    
-  def test_reference
-    definition = Definition.new
-    definition.columns = ['a', 'b']
-    assert_equal 'a', definition[0]
-    assert_equal 'b', definition[1]
-  end
-  
-  def test_size
-    definition = Definition.new
-    definition.columns = [1, 2]
-    assert_equal 2, definition.size
   end
 end

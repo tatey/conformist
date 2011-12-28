@@ -4,8 +4,6 @@ module Conformist
     
     attr_accessor :builder, :columns
     
-    delegate [:[], :each, :size] => :columns # TODO: Probably remove these methods
-    
     def initialize &block
       self.builder = Builder
       self.columns = []
