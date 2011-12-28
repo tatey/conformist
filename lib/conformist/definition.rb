@@ -38,8 +38,8 @@ module Conformist
         @builder = value
       end
 
-      def column *args
-        columns << Column.new(*args)
+      def column *args, &block
+        columns << Column.new(*args, &block)
       end
 
       def columns
