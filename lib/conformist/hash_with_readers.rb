@@ -16,6 +16,10 @@ module Conformist
       end
     end
     
+    def == other
+      attributes == other.attributes
+    end
+    
   protected
   
     def respond_to_missing? method, include_private
