@@ -35,7 +35,7 @@ class Citizen
   column :email
 end
 
-Citizen.new.conform []
+Citizen.conform CSV.new(File.open('/path/to/file', 'r'))
 ```
 
 Lazy. Collection is not evaluated until you call #each or #map.
