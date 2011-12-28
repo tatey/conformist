@@ -7,6 +7,6 @@ class BuilderTest < MiniTest::Unit::TestCase
     column.expect :values_in, [1], [Array]
     definition = MiniTest::Mock.new
     definition.expect :columns, [column]
-    assert_equal({:a => [1]}, Builder.call(definition, []).store)
+    assert_equal({:a => [1]}, Builder.call(definition, []).attributes)
   end
 end

@@ -2,29 +2,29 @@ module Conformist
   class HashWithReaders
     extend Forwardable
     
-    attr_accessor :store
+    attr_accessor :attributes
     
-    delegate [:[], :[]=] => :store
+    delegate [:[], :[]=] => :attributes
     
     def initialize
-      self.store = {}
+      self.attributes = {}
     end
     
     def merge other
       self.class.new.tap do |instance|
-        instance.store = store.merge other
+        instance.attributes = attributes.merge other
       end
     end
     
   protected
   
     def respond_to_missing? method, include_private
-      store.has_key?(method) || super
+      attributes.has_key?(method) || super
     end
     
     def method_missing method, *args, &block
-      if store.has_key? method
-        store[method]
+      if attributes.has_key? method
+        attributes[method]
       else
         super
       end
