@@ -7,6 +7,7 @@ end
 require 'conformist/base'
 require 'conformist/column'
 require 'conformist/definition'
+require 'conformist/hash_with_readers'
 require 'conformist/row'
 
 module Conformist
