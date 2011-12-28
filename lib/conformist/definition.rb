@@ -1,17 +1,23 @@
 module Conformist  
-  class Definition
-    attr_accessor :builder, :columns
-    
-    def initialize definition = nil, &block
-      self.builder = definition ? definition.builder.dup : Builder
-      self.columns = definition ? definition.columns.dup : []
-      if block
-        instance_eval &block 
-      end
+  module Definition
+    def builder
+      @builder ||= Builder
     end
-
+    
+    def builder= value
+      @builder = value
+    end
+    
     def column *args
       columns << Column.new(*args)
+    end
+    
+    def columns
+      @columns ||= []
+    end
+    
+    def columns= value
+      @columns = value
     end
     
     def conform enumerables
@@ -20,6 +26,6 @@ module Conformist
           yielder.yield builder.call(self, enumerable)
         end
       end
-    end    
+    end
   end
 end

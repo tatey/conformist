@@ -32,7 +32,7 @@ class Citizen
   include Conformist
   
   column :name, 0, 1
-  column :email
+  column :email, 2
 end
 
 Citizen.conform CSV.new(File.open('/path/to/file', 'r'))
