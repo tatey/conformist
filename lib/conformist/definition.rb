@@ -1,7 +1,5 @@
 module Conformist  
   class Definition
-    extend Forwardable
-    
     attr_accessor :builder, :columns
     
     def initialize definition = nil, &block
