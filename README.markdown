@@ -29,7 +29,7 @@ Class definition. Declarative and maintains compatibility with earlier versions.
 
 ``` ruby
 class Citizen
-  include Conformist
+  extend Conformist
   
   column :name, 0, 1
   column :email, 2
