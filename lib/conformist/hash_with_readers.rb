@@ -19,15 +19,11 @@ module Conformist
   protected
   
     def respond_to_missing? method, include_private
-      attributes.has_key?(method) || super
+      attributes.key?(method) || super
     end
     
     def method_missing method, *args, &block
-      if attributes.has_key? method
-        attributes[method]
-      else
-        super
-      end
+      attributes.fetch method, super
     end
   end
 end
