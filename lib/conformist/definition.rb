@@ -5,11 +5,14 @@ module Conformist
     attr_accessor :builder, :columns
     
     def initialize definition = nil, &block
-      self.builder = Builder
-      self.columns = definition ? definition.columns.dup : []
-      if block
-        instance_eval &block 
+      if definition
+        self.builder = definition.builder.dup
+        self.columns = definition.columns.dup
+      else
+        self.builder = Builder
+        self.columns = []
       end
+      instance_eval &block if block
     end
 
     def column *args
