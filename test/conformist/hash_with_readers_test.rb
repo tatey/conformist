@@ -12,7 +12,10 @@ class HashWithReadersTest < MiniTest::Unit::TestCase
   end
   
   def test_merge
-    skip
+    hash1 = HashWithReaders.new
+    hash2 = hash1.merge :a => 1
+    refute_equal hash1.object_id, hash2.object_id
+    assert_equal({:a => 1}, hash2.store)
   end
   
   def test_readers
