@@ -209,8 +209,36 @@ end
 
 ## Upgrading from 0.0.3 to 0.1.0
 
-* FasterCSV is not a dependancy. See **Conform** for examples using CSVs.
+* FasterCSV is not bundled.
 * `include Conformist::Base` is deprecated, `extend Conformist` instead.
+
+Where previously you had
+
+```
+class Citizen
+  include Conformist::Base
+
+  column :name, 0, 1
+end
+
+Citizen.load('~/file.csv').foreach do |citizen|
+  # ...
+end
+```
+
+You should now do
+
+``` ruby
+class Citizen
+  extend Conformist
+
+  column :name, 0, 1
+end
+
+Citizen.conform(CSV.open('~/file.csv')).each do |citizen|
+  # ...
+end
+```
 
 ## Compatibility
 
