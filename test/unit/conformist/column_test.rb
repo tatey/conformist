@@ -1,6 +1,10 @@
 require 'helper'
 
 class ColumnTest < MiniTest::Unit::TestCase
+  def stub_row
+    ('a'..'d').to_a
+  end
+  
   def test_name
     column = Conformist::Column.new :foo
     assert_equal :foo, column.name

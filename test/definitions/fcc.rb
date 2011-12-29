@@ -1,8 +1,6 @@
 class FCC
-  include Conformist::Base
-  
-  option :col_sep => '|'
-   
+  extend Conformist
+     
   column :name, 10, 11 do |values|
     "#{values[0].upcase}, #{values[-1]}"
   end
