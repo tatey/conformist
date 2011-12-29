@@ -45,4 +45,26 @@ class IntegrationTest < MiniTest::Unit::TestCase
     last = enumerable.to_a.last
     assert_equal HashWithReaders.new(:state => 'QLD, Queensland', :capital => 'Brisbane'), last
   end
+  
+  def test_inherited_instance_with_array_of_arrays
+    data = Array.new.tap do |d|
+      d << ['NSW', 'New South Wales', 'Sydney']
+      d << ['VIC', 'Victoria', 'Melbourne']
+      d << ['QLD', 'Queensland', 'Brisbane']
+    end
+    parent = Conformist.new do
+      column :state, 0, 1 do |values|
+        "#{values.first}, #{values.last}"
+      end
+      column :capital, 2
+    end
+    child = Conformist.new parent do
+      column :country do 
+        'Australia'
+      end
+    end
+    enumerable = child.conform data
+    last = enumerable.to_a.last
+    assert_equal HashWithReaders.new(:state => 'QLD, Queensland', :capital => 'Brisbane', :country => 'Australia'), last
+  end
 end
