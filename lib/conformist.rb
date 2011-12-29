@@ -1,3 +1,4 @@
+require 'conformist/base'
 require 'conformist/builder'
 require 'conformist/column'
 require 'conformist/definition'
