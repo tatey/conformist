@@ -3,8 +3,8 @@ module Conformist
     extend Forwardable
     
     attr_accessor :attributes
-    
-    delegate [:[], :[]=, :fetch, :key?] => :attributes
+        
+    def_delegators :attributes, :[], :[]=, :fetch, :key?
     
     def initialize attributes = {}
       self.attributes = attributes

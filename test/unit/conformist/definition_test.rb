@@ -47,8 +47,8 @@ class DefinitionTest < MiniTest::Unit::TestCase
 
   def test_conform_returns_enumerable
     definition = Class.new { extend Definition }
-    assert definition.conform(nil).respond_to?(:each)
-    assert definition.conform(nil).respond_to?(:map)
+    assert definition.conform([]).respond_to?(:each)
+    assert definition.conform([]).respond_to?(:map)
   end
 
   def test_conform_calls_builders_call_method
