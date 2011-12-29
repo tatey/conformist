@@ -111,6 +111,13 @@ enumerable1.each &block # Each has the lowest memory footprint because it doesn'
 enumerable2.map &block
 ```
 
+Passed into the block is a Struct-like object. You can access keys like you would a hash or you can access attributes like you would an object. The latter is the preferred syntax.
+
+``` ruby
+citizen[:name] # => Tate Johnson
+citizen.name   # => Tate Johnson
+```
+
 ### One Column
 
 Maps the first column in the input file to the `:first_name` key-value pair. Indexing starts at zero.
