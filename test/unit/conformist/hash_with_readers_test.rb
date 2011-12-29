@@ -28,7 +28,7 @@ class HashWithReadersTest < MiniTest::Unit::TestCase
     assert_equal 1, hash.c_d
   end
   
-  if respond_to? :respond_to_missing? # Supported in 1.9+
+  if respond_to? :respond_to_missing? # Compatible with 1.9
     def test_readers_with_respond_to_missing
       hash = HashWithReaders.new :a => 1, :c_d => 1
       assert hash.respond_to?(:a)

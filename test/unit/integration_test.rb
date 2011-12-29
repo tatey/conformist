@@ -9,7 +9,7 @@ class IntegrationTest < MiniTest::Unit::TestCase
   end
   
   def csv filename, options = {}
-    if RUBY_VERSION < '1.9'
+    if CSV.method(:open).arity == -3
       CSV.open fixture(filename), 'r', options[:col_sep]
     else
       CSV.open fixture(filename), options

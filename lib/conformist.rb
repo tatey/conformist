@@ -1,7 +1,3 @@
-if RUBY_VERSION < '1.9'
-  require 'generator'
-end
-
 require 'conformist/base'
 require 'conformist/builder'
 require 'conformist/column'
@@ -9,7 +5,10 @@ require 'conformist/definition'
 require 'conformist/hash_with_readers'
 
 module Conformist
-  Enumerator = RUBY_VERSION < '1.9' ? Generator : ::Enumerator
+  unless defined? Enumerator # Compatible with 1.8
+    require 'generator'
+    Enumerator = Generator
+  end
   
   def self.extended base
     base.extend Definition
