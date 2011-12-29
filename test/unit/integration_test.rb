@@ -6,7 +6,7 @@ require 'helper'
 class IntegrationTest < MiniTest::Unit::TestCase
   def open_csv filename, options = {}
     path = File.expand_path "../../fixtures/#{filename}", __FILE__
-    if CSV.method(:open).arity == -3
+    if CSV.method(:open).arity == -3 # 1.8 CSV
       CSV.open path, 'r', options[:col_sep]
     else
       CSV.open path, options
