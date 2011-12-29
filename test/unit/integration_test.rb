@@ -24,7 +24,7 @@ class IntegrationTest < MiniTest::Unit::TestCase
   
   def test_class_with_psv
     psv        = CSV.open fixture('fcc.txt'), :col_sep => '|'
-    enumerable = ACMA.conform psv
+    enumerable = FCC.conform psv
     last       = enumerable.to_a.last
     assert_equal HashWithReaders.new(:name => 'LOS ANGELES, CA', :callsign => 'KVTU-LP', :latitude => '34 13 38.00 N', :signtal_type => 'digital'), last
   end
