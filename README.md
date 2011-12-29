@@ -221,7 +221,7 @@ end
 
 Where previously you had
 
-```
+``` ruby
 class Citizen
   include Conformist::Base
 
