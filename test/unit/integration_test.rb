@@ -26,6 +26,23 @@ class IntegrationTest < MiniTest::Unit::TestCase
     psv        = CSV.open fixture('fcc.txt'), :col_sep => '|'
     enumerable = ACMA.conform psv
     last       = enumerable.to_a.last
-    assert_equal HashWithReaders.new({:name => "LOS ANGELES, CA", :callsign => "KVTU-LP", :latitude => "34 13 38.00 N", :signtal_type => "digital"}), last
+    assert_equal HashWithReaders.new(:name => 'LOS ANGELES, CA', :callsign => 'KVTU-LP', :latitude => '34 13 38.00 N', :signtal_type => 'digital'), last
+  end
+  
+  def test_instance_with_array_of_arrays
+    data = Array.new.tap do |d|
+      d << ['NSW', 'New South Wales', 'Sydney']
+      d << ['VIC', 'Victoria', 'Melbourne']
+      d << ['QLD', 'Queensland', 'Brisbane']
+    end
+    definition = Conformist.new do
+      column :state, 0, 1 do |values|
+        "#{values.first}, #{values.last}"
+      end
+      column :capital, 2
+    end
+    enumerable = definition.conform data
+    last = enumerable.to_a.last
+    assert_equal HashWithReaders.new(:state => 'QLD, Queensland', :capital => 'Brisbane'), last
   end
 end
