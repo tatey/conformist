@@ -26,6 +26,8 @@ end
 Insert the transmitters into a SQLite database.
 
 ``` ruby
+require 'sqlite3'
+
 db = SQLite3::Database.new 'transmitters.db'
 schema.conform(csv).each do |transmitter|
   db.execute "INSERT INTO transmitters (callsign, ...) VALUES ('#{transmitter.callsign}', ...);"
@@ -72,12 +74,12 @@ gem 'conformist'
 ### Anonymous Schema
 
 ``` ruby
-person = Conformist.new do
+citizen = Conformist.new do
   column :name, 0, 1
   column :email, 2
 end
 
-person.conform [['Tate', 'Johnson', 'tate@tatey.com']]
+citizen.conform [['Tate', 'Johnson', 'tate@tatey.com']]
 ```
 
 ### Class Schema
@@ -120,7 +122,7 @@ citizen.name   # => Tate Johnson
 
 ### One Column
 
-Maps the first column in the input file to the `:first_name` key-value pair. Indexing starts at zero.
+Maps the first column in the input file to `:first_name`. Column indexing starts at zero.
 
 ``` ruby
 column :first_name, 0
@@ -128,7 +130,7 @@ column :first_name, 0
 
 ### Many Columns
 
-Maps the first and second columns in the input file to the `:name` key-value pair and implicitly concatenates the values.
+Maps the first and second columns in the input file to `:name`.
 
 ``` ruby
 column :name, 0, 1
@@ -137,12 +139,14 @@ column :name, 0, 1
 Indexing is completely arbitrary and you can map any combination.
 
 ``` ruby
-column :name_and_city 0, 2
+column :name_and_city 0, 1, 2
 ```
+
+Many columns are implicitly concatenated. Behaviour can be changed by passing a block. See *preprocessing*.
 
 ### Preprocessing
 
-Sometimes you will want to manipulate values before they're conformed. You can pass a block and get access to the values. The return value of the expression becomes the conformed output.
+Sometimes values need to be manipulated before they're conformed. Passing a block gets access to values. The return value of the block becomes the conformed output.
 
 ``` ruby
 column :name, 0, 1 do |values|
@@ -150,7 +154,7 @@ column :name, 0, 1 do |values|
 end
 ```
 
-Works with one column too. Instead of getting a collection of objects, you get one object.
+Works with one column too. Instead of getting a collection of objects, one object is passed to the block.
 
 ``` ruby
 column :first_name, 0 do |value|
@@ -160,7 +164,7 @@ end
 
 ### Virtual Columns
 
-Declare a column you want included in the conformed output that is not based on the input file. This is useful when you need to set values based on the conformist schema. 
+Columns do not have to be sourced from input. Omit the index and a virtual column is included in the conformed output.
 
 ``` ruby
 column :day do 
@@ -170,7 +174,7 @@ end
 
 ### Inheritance
 
-Inheriting from a schema gives you access to all of the superclasses' columns. 
+Inheriting from a schema gives access to all of the parent schema's columns.
 
 #### Anonymous Schema
 
@@ -214,10 +218,16 @@ class Child < Citizen
 end
 ```
 
-## Upgrading from 0.0.3 to 0.1.0
+## 0.0.3 to 0.1.0
 
-* FasterCSV is not bundled.
-* `include Conformist::Base` is deprecated, `extend Conformist` instead.
+### Changes
+
+* `include Conformist::Base` is deprecated, use `extend Conformist` instead.
+* `Conformist.foreach` has is deprecated.
+* `Conformist.load` is deprecated.
+* FasterCSV is no longer bundled. Require it yourself or prefer `CSV` from the standard library when using 1.9.X.
+
+### Upgrading
 
 Where previously you had
 
@@ -236,6 +246,8 @@ end
 You should now do
 
 ``` ruby
+require 'csv' # or 'fastercsv' when not using 1.9.X
+
 class Citizen
   extend Conformist
 
