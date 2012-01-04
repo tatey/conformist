@@ -8,6 +8,12 @@ class ConformistTest < MiniTest::Unit::TestCase
     assert definition.respond_to?(:conform)
   end
   
+  def test_foreach
+    assert_raises RuntimeError do
+      Conformist.foreach
+    end
+  end
+  
   def test_new
     assert Conformist.new.class.include?(Definition)
   end

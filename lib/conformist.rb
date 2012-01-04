@@ -14,6 +14,10 @@ module Conformist
     base.extend Definition
   end
   
+  def self.foreach *args, &block
+    raise "Conformist.foreach is deprecated, use something like [MySchema1.conform(file1), MySchema2.conform(file2)].each(&block) instead (#{caller.first})"
+  end
+  
   def self.new *args, &block
     Class.new { include Definition }.new *args, &block
   end

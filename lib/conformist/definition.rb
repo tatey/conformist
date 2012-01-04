@@ -15,6 +15,10 @@ module Conformist
         base.builder = builder.dup
         base.columns = columns.dup
       end
+      
+      def load *args
+        raise "#{self.class}.load is deprecated, use something like #{self.class}.conform(file).each(&block) instead (#{caller.first})"
+      end
     end
     
     module InstanceExtensions
@@ -56,7 +60,7 @@ module Conformist
             yielder.yield builder.call(self, enumerable)
           end
         end
-      end
+      end      
     end
   end
 end

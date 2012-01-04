@@ -65,4 +65,10 @@ class DefinitionTest < MiniTest::Unit::TestCase
     assert_equal [0, 1], child1.columns
     assert_equal [0, 2], child2.columns
   end
+  
+  def test_load
+    assert_raises RuntimeError do
+      Class.new { extend Definition }.load
+    end
+  end
 end
