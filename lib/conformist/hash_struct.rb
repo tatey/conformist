@@ -17,7 +17,7 @@ module Conformist
     end
     
     def == other
-      attributes == other.attributes
+      other.class == self.class && attributes == other.attributes
     end
     
   protected

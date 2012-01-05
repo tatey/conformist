@@ -14,6 +14,16 @@ class HashStructTest < MiniTest::Unit::TestCase
     assert hash.respond_to?(:key?)
   end
   
+  def test_equality
+    hash1 = HashStruct.new :a => 1
+    hash2 = HashStruct.new :a => 1
+    hash3 = MiniTest::Mock.new
+    hash3.expect :attributes, {:a => 1}
+    hash3.expect :class, MiniTest::Mock
+    assert_equal hash1, hash2
+    refute_equal hash1, hash3
+  end
+  
   def test_merge
     hash1 = HashStruct.new
     hash2 = hash1.merge :a => 1
