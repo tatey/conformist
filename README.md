@@ -244,7 +244,7 @@ class Child < Citizen
 end
 ```
 
-## Upgrading from 0.0.3 to 0.1.0
+## Upgrading from <= 0.0.3 to 0.1.0
 
 Where previously you had
 
