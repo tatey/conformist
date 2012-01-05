@@ -73,6 +73,8 @@ db = SQLite3::Database.new 'transmitters.db'
 end
 ```
 
+For **more examples** take a look at `test/fixtures` and `test/schemas` and `test/unit/integration_test.rb`.
+
 ## Installation
 
 Conformist is available as a gem. Install it at the command line.
