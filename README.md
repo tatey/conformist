@@ -73,7 +73,7 @@ db = SQLite3::Database.new 'transmitters.db'
 end
 ```
 
-For **more examples** take a look at `test/fixtures` and `test/schemas` and `test/unit/integration_test.rb`.
+For **more examples** see `test/fixtures`, `test/schemas` and `test/unit/integration_test.rb`.
 
 ## Installation
 
