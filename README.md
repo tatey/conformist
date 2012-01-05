@@ -2,6 +2,8 @@
 
 Bend CSVs to your will. Stop using array indexing and start using declarative schemas. Declarative schemas are easier to understand, require less code, quicker to setup and I/O independent. Use CSV, FasterCSV or any array-like input with complete control over the output. 
 
+![](http://f.cl.ly/items/00191n3O1J2E1a342F1L/conformist.jpg)
+
 ## Quick and Dirty Examples
 
 Open a CSV file and declare a schema.
