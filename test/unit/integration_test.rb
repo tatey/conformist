@@ -1,7 +1,7 @@
 require 'csv'
-require 'definitions/acma'
-require 'definitions/fcc'
 require 'helper'
+require 'schemas/acma'
+require 'schemas/fcc'
 
 class IntegrationTest < MiniTest::Unit::TestCase
   def open_csv filename, options = {}
