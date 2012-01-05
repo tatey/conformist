@@ -63,6 +63,7 @@ au_csv = CSV.open '~/au/transmitters.csv'
 us_csv = CSV.open '~/us/transmitters.csv'
 
 db = SQLite3::Database.new 'transmitters.db'
+
 [au_schema.conform(au_csv), us_schema.conform(us_csv)].each do |schema|
   schema.each do |transmitter|
     db.execute "INSERT INTO transmitters (callsign, ...) VALUES ('#{transmitter.callsign}', ...);"
