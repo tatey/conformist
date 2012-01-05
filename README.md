@@ -1,10 +1,8 @@
 # Conformist 
 
-Conformist lets you bend CSVs to your will. Let multiple, different input files conform to a single interface without rewriting your parser each time.
+Bend CSVs to your will. Stop using array indexing and start using declarative schemas. Declarative schemas are easier to understand, require less code, quicker to setup and I/O independent. Use CSV, FasterCSV or any array-like input with complete control over the output. 
 
-Motivation for this project came from the desire to simplify importing data from various government organisations into [Antenna Mate](http://antennamate.com). The data from each government was similar, but had completely different formatting. Some pieces of data needed preprocessing while others simply needed to be concatenated together. I did not want to write a new parser for each new government organisation. Instead, I created Conformist.
-
-## Quick and Dirty
+## Quick and Dirty Examples
 
 Open a CSV file and declare a schema.
 
@@ -34,7 +32,7 @@ schema.conform(csv).each do |transmitter|
 end
 ```
 
-Only insert the transmitters with the name "Mount Cooth-tha" using ActiveRecord.
+Only insert the transmitters with the name "Mount Cooth-tha" using ActiveRecord or DataMapper.
 
 ``` ruby
 transmitters = schema.conform(csv).select do |transmitter|
@@ -45,12 +43,29 @@ transmitter.each do |transmitter|
 end
 ```
 
-Let multiple, different input files conform to a single interface without rewriting your parser each time.
+Source transmitters from multiple, different input files and make them conform to a single interface.
 
 ``` ruby
-[schema1.conform(csv1), schema2.conform(csv2), schema3.conform(csv3)].each do |schema|
+require 'conformist'
+require 'csv'
+require 'sqlite3'
+
+au_schema = Conformist.new do
+  column :callsign, 8
+  column :latitude, 10
+end
+us_schema = Conformist.new do
+  column :callsign, 1
+  column :latitude, 1, 2, 3
+end
+
+au_csv = CSV.open '~/au/transmitters.csv'
+us_csv = CSV.open '~/us/transmitters.csv'
+
+db = SQLite3::Database.new 'transmitters.db'
+[au_schema.conform(au_csv), us_schema.conform(us_csv)].each do |schema|
   schema.each do |transmitter|
-    # ...
+    db.execute "INSERT INTO transmitters (callsign, ...) VALUES ('#{transmitter.callsign}', ...);"
   end
 end
 ```
@@ -73,6 +88,8 @@ gem 'conformist'
 
 ### Anonymous Schema
 
+Anonymous schemas are quick to declare and don't have the overhead of creating an explicit class.
+
 ``` ruby
 citizen = Conformist.new do
   column :name, 0, 1
@@ -84,7 +101,7 @@ citizen.conform [['Tate', 'Johnson', 'tate@tatey.com']]
 
 ### Class Schema
 
-Class schemas were the only schemas supported in earlier versions.
+Class schemas are explicit. Class schemas were the only type available in earlier versions of Conformist.
 
 ``` ruby
 class Citizen
@@ -99,25 +116,41 @@ Citizen.conform [['Tate', 'Johnson', 'tate@tatey.com']]
 
 ### Conform
 
-`#conform` is lazy, returning an [Enumerator](http://www.ruby-doc.org/core-1.9.3/Enumerator.html). That means schemas can be setup now and evaluated later. 
+Conform is the principle method for applying a schema to the given input.
 
 ``` ruby
-enumerable1 = schema.conform CSV.open('~/file.csv') # CSV
-enumerable2 = schema.conform [[], [], []]           # Array of arrays
+enumerator = schema.conform CSV.open('~/file.csv')
+enumerator.each do |row|
+  puts row.attributes
+end
 ```
 
-A schema is evaluated when `#each`, `#map` or any method defined in [Enumerable](http://www.ruby-doc.org/core-1.9.3/Enumerable.html) is calledd. `#conform` accepts any object that responds to `#each`.
+#### Input
+
+`#conform` expects any object that responds to `#each` to return an array-like object.
 
 ``` ruby
-enumerable1.each &block # Each has the lowest memory footprint because it doesn't build a collection
-enumerable2.map &block
+CSV.open('~/file.csv').responds_to? :each # => true
+[[], [], []].responds_to? :each           # => true
 ```
 
-Passed into the block is a Struct-like object. You can access keys like you would a hash or you can access attributes like you would an object. The latter is the preferred syntax.
+#### Enumerator
+
+`#conform` is lazy, returning an [Enumerator](http://www.ruby-doc.org/core-1.9.3/Enumerator.html). Input is not parsed until you call `#each`, `#map` or any method defined in [Enumerable](http://www.ruby-doc.org/core-1.9.3/Enumerable.html). That means schemas can be assigned now and evaluated later. `#each` has the lowest memory footprint because it does not build a collection.
+
+#### Struct
+
+The argument passed into the block is a struct-like object. You can access columns as methods or keys. Columns were only accessible as keys in earlier versions of Conformist. Methods are now the preferred syntax.
 
 ``` ruby
-citizen[:name] # => Tate Johnson
-citizen.name   # => Tate Johnson
+citizen[:name] # => "Tate Johnson"
+citizen.name   # => "Tate Johnson"
+```
+
+For convenience the `#attributes` method returns a hash of key-value pairs suitable for creating ActiveRecord or DataMapper records.
+
+``` ruby
+citizen.attributes # => {:name => "Tate Johnson", :email => "tate@tatey.com"}
 ```
 
 ### One Column
@@ -150,7 +183,7 @@ Sometimes values need to be manipulated before they're conformed. Passing a bloc
 
 ``` ruby
 column :name, 0, 1 do |values|
-  values.map { |v| v.upcase } * ' '
+  values.map(&:upcase) * ' '
 end
 ```
 
@@ -164,7 +197,7 @@ end
 
 ### Virtual Columns
 
-Columns do not have to be sourced from input. Omit the index and a virtual column is included in the conformed output.
+Virtual columns are not sourced from input. Omit the index to create a virtual column. Like real columns, virtual columns are included in the conformed output.
 
 ``` ruby
 column :day do 
@@ -178,18 +211,14 @@ Inheriting from a schema gives access to all of the parent schema's columns.
 
 #### Anonymous Schema
 
+Anonymous inheritance takes inspiration from Ruby's syntax for [instantiating new classes](http://ruby-doc.org/core-1.9.3/Class.html#method-c-new).
+
 ``` ruby
-citizen = Conformist.new do
+parent = Conformist.new do
   column :name, 0, 1
 end
 
-adult = Conformist.new citizen do
-  column :category do
-    'Adult'
-  end
-end
-
-child = Conformist.new citizen do
+child = Conformist.new parent do
   column :category do
     'Child'
   end
@@ -198,17 +227,13 @@ end
 
 #### Class Schema
 
+Classical inheritance works as expected.
+
 ``` ruby
-class Citizen
+class Parent
   extend Conformist
 
   column :name, 0, 1
-end
-
-class Adult < Citizen
-  column :category do
-    'Adult'
-  end
 end
 
 class Child < Citizen
@@ -218,16 +243,7 @@ class Child < Citizen
 end
 ```
 
-## 0.0.3 to 0.1.0
-
-### Changes
-
-* `include Conformist::Base` is deprecated, use `extend Conformist` instead.
-* `Conformist.foreach` has is deprecated.
-* `Conformist.load` is deprecated.
-* FasterCSV is no longer bundled. Require it yourself or prefer `CSV` from the standard library when using 1.9.X.
-
-### Upgrading
+## Upgrading from 0.0.3 to 0.1.0
 
 Where previously you had
 
@@ -246,7 +262,7 @@ end
 You should now do
 
 ``` ruby
-require 'csv' # or 'fastercsv' when not using 1.9.X
+require 'fastercsv'
 
 class Citizen
   extend Conformist
@@ -259,11 +275,19 @@ Citizen.conform(CSV.open('~/file.csv')).each do |citizen|
 end
 ```
 
-## Compatibility
+See CHANGELOG.md for a full list of changes.
 
-* 1.9.2+
-* 1.8.7
-* JRuby
+## Compatibility and Dependancies
+
+* MRI 1.9.2+
+* MRI 1.8.7
+* JRuby 1.6.5
+
+Conformist has no explicit dependencies, although `CSV` or `FasterCSV` is commonly used.
+
+## Motivation
+
+Motivation for this project came from the desire to simplify importing data from various government organisations into [Antenna Mate](http://antennamate.com). The data from each government was similar, but had completely different formatting. Some pieces of data needed preprocessing while others simply needed to be concatenated together. Not wanting to write a parser for each new government organisation, I created Conformist.
 
 ## Copyright
 

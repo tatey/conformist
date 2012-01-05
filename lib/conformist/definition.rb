@@ -17,15 +17,15 @@ module Conformist
       end
       
       def load *args
-        raise "#{self.class}.load is deprecated, use something like #{self.class}.conform(file).each(&block) instead (#{caller.first})"
+        raise "``#{self.class}.load` has been removed, use something like `#{self.class}.conform(file).each(&block)` instead (#{caller.first})"
       end
     end
     
     module InstanceExtensions
-      def initialize instance = nil, &block
-        if instance
-          self.builder = instance.builder.dup
-          self.columns = instance.columns.dup
+      def initialize super_schema = nil, &block
+        if super_schema
+          self.builder = super_schema.builder.dup
+          self.columns = super_schema.columns.dup
         end
         if block
           instance_eval &block 

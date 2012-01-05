@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 0.1.0 / Edge
+
+* `include Conformist::Base` has been removed.
+* `Conformist.foreach` has been removed.
+* `Conformist::Base.load` has been removed.
+* FasterCSV is no longer included, use `require 'fastercsv'` instead.
+
 ## 0.0.3 / 2011-05-07
 
 * Inheriting from a class which mixes in Conformist::Base gives you access to all of the superclasses' columns.
