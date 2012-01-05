@@ -16,19 +16,19 @@ class IntegrationTest < MiniTest::Unit::TestCase
   def test_class_with_csv
     enumerable = ACMA.conform open_csv('acma.csv')
     last       = enumerable.to_a.last
-    assert_equal HashWithReaders.new(:name=>'CRAFERS', :callsign=>'ADS10', :latitude=>'34 58 57S'), last
+    assert_equal HashStruct.new(:name=>'CRAFERS', :callsign=>'ADS10', :latitude=>'34 58 57S'), last
   end
   
   def test_inherited_class_with_csv
     enumerable = ACMA::Digital.conform open_csv('acma.csv')
     last       = enumerable.to_a.last
-    assert_equal HashWithReaders.new(:name=>'CRAFERS', :callsign=>'ADS10', :latitude=>'34 58 57S', :signal_type => 'digital'), last
+    assert_equal HashStruct.new(:name=>'CRAFERS', :callsign=>'ADS10', :latitude=>'34 58 57S', :signal_type => 'digital'), last
   end
   
   def test_class_with_psv
     enumerable = FCC.conform open_csv('fcc.txt', :col_sep => '|')
     last       = enumerable.to_a.last
-    assert_equal HashWithReaders.new(:name => 'LOS ANGELES, CA', :callsign => 'KVTU-LP', :latitude => '34 13 38.00 N', :signtal_type => 'digital'), last
+    assert_equal HashStruct.new(:name => 'LOS ANGELES, CA', :callsign => 'KVTU-LP', :latitude => '34 13 38.00 N', :signtal_type => 'digital'), last
   end
   
   def test_instance_with_array_of_arrays
@@ -45,7 +45,7 @@ class IntegrationTest < MiniTest::Unit::TestCase
     end
     enumerable = definition.conform data
     last = enumerable.to_a.last
-    assert_equal HashWithReaders.new(:state => 'QLD, Queensland', :capital => 'Brisbane'), last
+    assert_equal HashStruct.new(:state => 'QLD, Queensland', :capital => 'Brisbane'), last
   end
   
   def test_inherited_instance_with_array_of_arrays
@@ -67,6 +67,6 @@ class IntegrationTest < MiniTest::Unit::TestCase
     end
     enumerable = child.conform data
     last = enumerable.to_a.last
-    assert_equal HashWithReaders.new(:state => 'QLD, Queensland', :capital => 'Brisbane', :country => 'Australia'), last
+    assert_equal HashStruct.new(:state => 'QLD, Queensland', :capital => 'Brisbane', :country => 'Australia'), last
   end
 end

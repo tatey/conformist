@@ -1,5 +1,5 @@
 module Conformist
-  class HashWithReaders
+  class HashStruct
     extend Forwardable
     
     attr_accessor :attributes

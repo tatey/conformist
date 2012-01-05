@@ -1,7 +1,7 @@
 require 'conformist/base'
 require 'conformist/builder'
 require 'conformist/column'
-require 'conformist/hash_with_readers'
+require 'conformist/hash_struct'
 require 'conformist/schema'
 
 module Conformist
