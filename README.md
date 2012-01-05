@@ -43,7 +43,7 @@ transmitter.each do |transmitter|
 end
 ```
 
-Source transmitters from multiple, different input files and make them conform to a single interface.
+Source from multiple, different input files and insert transmitters together into a single database.
 
 ``` ruby
 require 'conformist'
