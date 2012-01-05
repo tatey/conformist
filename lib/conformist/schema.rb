@@ -1,5 +1,5 @@
 module Conformist  
-  module Definition
+  module Schema
     def self.included base
       base.send :include, InstanceExtensions
       base.send :include, Methods

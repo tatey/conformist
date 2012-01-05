@@ -1,8 +1,8 @@
 require 'conformist/base'
 require 'conformist/builder'
 require 'conformist/column'
-require 'conformist/definition'
 require 'conformist/hash_with_readers'
+require 'conformist/schema'
 
 module Conformist
   unless defined? Enumerator # Compatible with 1.8
@@ -11,7 +11,7 @@ module Conformist
   end
   
   def self.extended base
-    base.extend Definition
+    base.extend Schema
   end
   
   def self.foreach *args, &block
@@ -19,6 +19,6 @@ module Conformist
   end
   
   def self.new *args, &block
-    Class.new { include Definition }.new *args, &block
+    Class.new { include Schema }.new *args, &block
   end
 end

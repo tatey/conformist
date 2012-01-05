@@ -15,6 +15,6 @@ class ConformistTest < MiniTest::Unit::TestCase
   end
   
   def test_new
-    assert Conformist.new.class.include?(Definition)
+    assert Conformist.new.class.include?(Schema)
   end
 end
