@@ -2,10 +2,13 @@
 
 ## 0.1.0 / Edge
 
+* Added anonymous schemas.
+* Added `Conformist::Schema::Methods#conform` for lazily applying schema to input.
+* Added capability to access columns with methods.
+* FasterCSV is no longer included, use `require 'fastercsv'` instead.
 * `include Conformist::Base` has been removed.
 * `Conformist.foreach` has been removed.
-* `Conformist::Base.load` has been removed.
-* FasterCSV is no longer included, use `require 'fastercsv'` instead.
+* `Conformist::Base::ClassMethods#load` has been removed.
 
 ## 0.0.3 / 2011-05-07
 

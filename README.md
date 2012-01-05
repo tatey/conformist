@@ -117,7 +117,7 @@ Citizen.conform [['Tate', 'Johnson', 'tate@tatey.com']]
 
 ### Conform
 
-Conform is the principle method for applying a schema to the given input.
+Conform is the principle method for lazily applying a schema to the given input.
 
 ``` ruby
 enumerator = schema.conform CSV.open('~/file.csv')
