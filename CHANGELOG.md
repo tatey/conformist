@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.1.0 / Edge
+## 0.1.0 / 2012-01-05
 
 * Added anonymous schemas.
 * Added `Conformist::Schema::Methods#conform` for lazily applying schema to input.
