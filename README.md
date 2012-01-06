@@ -48,8 +48,8 @@ end
 Source from multiple, different input files and insert transmitters together into a single database.
 
 ``` ruby
-require 'conformist'
 require 'csv'
+require 'conformist'
 require 'sqlite3'
 
 au_schema = Conformist.new do
