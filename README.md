@@ -277,7 +277,7 @@ class Citizen
   column :name, 0, 1
 end
 
-Citizen.conform(CSV.open('~/file.csv')).each do |citizen|
+Citizen.conform(FasterCSV.open('~/file.csv')).each do |citizen|
   # ...
 end
 ```
