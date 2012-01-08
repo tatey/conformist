@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors              = ["Tate Johnson"]
   s.email                = ["tate@tatey.com"]
   s.homepage             = "https://github.com/tatey/conformist"
-  s.summary              = %q{Bend CSVs to your will.}
-  s.description          = %q{Stop using array indexing and start using declarative schemas.}
+  s.summary              = %q{Bend CSVs to your will with declarative schemas.}
+  s.description          = %q{Bend CSVs to your will with declarative schemas.}
   s.post_install_message = <<-EOS
 ********************************************************************************
 

@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/tatey/conformist.png)](http://travis-ci.org/tatey/conformist)
 
-Bend CSVs to your will. Stop using array indexing and start using declarative schemas. Declarative schemas are easier to understand, quicker to setup and independent of I/O.
+Bend CSVs to your will with declarative schemas. Map one or many columns, preprocess cells and lazily enumerate. Declarative schemas are easier to understand, quicker to setup and independent of I/O. Use CSV (Formally FasterCSV) or any array of array-like data-structure.
 
 ![](http://f.cl.ly/items/00191n3O1J2E1a342F1L/conformist.jpg)
 
