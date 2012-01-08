@@ -11,8 +11,8 @@ Bend CSVs to your will. Stop using array indexing and start using declarative sc
 Open a CSV file and declare a schema.
 
 ``` ruby
-require 'csv'
 require 'conformist'
+require 'csv'
 
 csv    = CSV.open '~/transmitters.csv'
 schema = Conformist.new do
@@ -50,8 +50,8 @@ end
 Source from multiple, different input files and insert transmitters together into a single database.
 
 ``` ruby
-require 'csv'
 require 'conformist'
+require 'csv'
 require 'sqlite3'
 
 au_schema = Conformist.new do
@@ -284,13 +284,23 @@ end
 
 See CHANGELOG.md for a full list of changes.
 
-## Compatibility and Dependancies
+## Compatibility
 
 * MRI 1.9.2+
 * MRI 1.8.7
 * JRuby 1.6.5
 
-Conformist has no explicit dependencies, although `CSV` or `FasterCSV` is commonly used.
+## Dependancies
+
+No explicit dependencies, although `CSV` or `FasterCSV` is commonly used.
+
+## Contributing
+
+1. Fork
+2. Install dependancies by running `$ bundle install`
+3. Write tests and code
+4. Make sure the tests pass by running `$ rake`
+5. Push and send a pull request on GitHub
 
 ## Motivation
 
