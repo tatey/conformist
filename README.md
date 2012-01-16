@@ -243,7 +243,7 @@ class Parent
   column :name, 0, 1
 end
 
-class Child < Citizen
+class Child < Parent
   column :category do
     'Child'
   end
