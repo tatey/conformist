@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 
   Upgrading from <= 0.0.3? You should be aware of breaking changes. See
   https://github.com/tatey/conformist and skip to "Upgrading from 0.0.3 to 
-  0.1.0" to learn more. Conformist will raise helpful messages where necessary.
+  0.1.1" to learn more. Conformist will raise helpful messages where necessary.
 
 ********************************************************************************  
 EOS

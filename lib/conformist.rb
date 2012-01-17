@@ -1,3 +1,5 @@
+require 'forwardable'
+
 require 'conformist/base'
 require 'conformist/builder'
 require 'conformist/column'
