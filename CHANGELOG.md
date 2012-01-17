@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.1.1 / 2011-01-17
+
+* Explicitly required `Forwardable`.
+
 ## 0.1.0 / 2012-01-05
 
 * Added anonymous schemas.
