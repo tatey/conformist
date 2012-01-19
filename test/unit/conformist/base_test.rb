@@ -1,6 +1,6 @@
 require 'helper'
 
-class BuilderTest < MiniTest::Unit::TestCase
+class Conformist::BuilderTest < MiniTest::Unit::TestCase
   def test_included
     assert_raises RuntimeError do
       Class.new { include Base }

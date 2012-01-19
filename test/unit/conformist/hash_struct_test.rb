@@ -1,6 +1,6 @@
 require 'helper'
 
-class HashStructTest < MiniTest::Unit::TestCase
+class Conformist::HashStructTest < MiniTest::Unit::TestCase
   def test_initialize
     assert_equal({:a => 1}, HashStruct.new({:a => 1}).attributes)
     assert_empty HashStruct.new.attributes

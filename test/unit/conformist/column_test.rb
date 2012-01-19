@@ -1,6 +1,6 @@
 require 'helper'
 
-class ColumnTest < MiniTest::Unit::TestCase
+class Conformist::ColumnTest < MiniTest::Unit::TestCase
   def stub_row
     ('a'..'d').to_a
   end

@@ -1,6 +1,6 @@
 require 'helper'
 
-class SchemaTest < MiniTest::Unit::TestCase
+class Conformist::SchemaTest < MiniTest::Unit::TestCase
   def test_initialize_with_instance
     parent = Class.new { include Schema }.new.tap { |d| d.columns = [0] }
     child1 = Class.new { include Schema }.new(parent).tap { |d| d.columns << 1 }
