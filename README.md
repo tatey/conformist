@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/tatey/conformist.png)](http://travis-ci.org/tatey/conformist)
 
-Bend CSVs to your will with declarative schemas. Map one or many columns, preprocess cells and lazily enumerate. Declarative schemas are easier to understand, quicker to setup and independent of I/O. Use CSV (Formally FasterCSV) or any array of array-like data structure.
+Bend CSVs to your will with declarative schemas. Map one or many columns, preprocess cells and lazily enumerate. Declarative schemas are easier to understand, quicker to setup and independent of I/O. Use [CSV](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/csv/rdoc/CSV.html) (Formally [FasterCSV](https://rubygems.org/gems/fastercsv)), [Spreadsheet](https://rubygems.org/gems/spreadsheet) or any array of array-like data structure.
 
 ![](http://f.cl.ly/items/00191n3O1J2E1a342F1L/conformist.jpg)
 
@@ -75,7 +75,31 @@ db = SQLite3::Database.new 'transmitters.db'
 end
 ```
 
-For **more examples** see `test/fixtures`, `test/schemas` and `test/unit/integration_test.rb`.
+Open a Microsoft Excel spreadsheet and declare a schema.
+
+```
+require 'conformist'
+require 'spreadsheet'
+
+book   = Spreadsheet.open '~/states.xls'
+sheet  = book.worksheet 0
+schema = Conformist.new do
+  column :state, 0, 1 do |values|
+    "#{values.first}, #{values.last}"
+  end
+  column :capital, 2
+end
+```
+
+Print each state's attributes to standard out.
+
+``` ruby
+schema.conform(sheet).each do |state|
+  $stdout.puts state.attributes
+end
+```
+
+For more examples see [test/fixtures](https://github.com/tatey/conformist/tree/master/test/fixtures), [test/schemas](https://github.com/tatey/conformist/tree/master/test/schemas) and [test/unit/integration_test.rb](https://github.com/tatey/conformist/blob/master/test/unit/integration_test.rb).
 
 ## Installation
 
