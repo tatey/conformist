@@ -50,13 +50,13 @@ class IntegrationTest < MiniTest::Unit::TestCase
       d << ['VIC', 'Victoria', 'Melbourne']
       d << ['QLD', 'Queensland', 'Brisbane']
     end
-    definition = Conformist.new do
+    schema = Conformist.new do
       column :state, 0, 1 do |values|
         "#{values.first}, #{values.last}"
       end
       column :capital, 2
     end
-    enumerable = definition.conform data
+    enumerable = schema.conform data
     last = enumerable.to_a.last
     assert_equal HashStruct.new(:state => 'QLD, Queensland', :capital => 'Brisbane'), last
   end
