@@ -1,10 +1,10 @@
 # CHANGELOG
 
-## 0.1.2 / 2011-01-19
+## 0.1.2 / 2012-01-19
 
 * `Conformist::Builder` coerces enumerables into an Array. Works with Spreadsheet for conforming Microsoft Excel spreadsheets.
 
-## 0.1.1 / 2011-01-17
+## 0.1.1 / 2012-01-17
 
 * Explicitly required `Forwardable`.
 
