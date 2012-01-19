@@ -77,7 +77,7 @@ end
 
 Open a Microsoft Excel spreadsheet and declare a schema.
 
-```
+``` ruby
 require 'conformist'
 require 'spreadsheet'
 
