@@ -2,14 +2,18 @@ require 'csv'
 require 'helper'
 require 'schemas/acma'
 require 'schemas/fcc'
+require 'spreadsheet'
 
 class IntegrationTest < MiniTest::Unit::TestCase
+  def fixture filename
+    File.expand_path "../../fixtures/#{filename}", __FILE__
+  end
+
   def open_csv filename, options = {}
-    path = File.expand_path "../../fixtures/#{filename}", __FILE__
     if CSV.method(:open).arity == -3 # 1.8 CSV
-      CSV.open path, 'r', options[:col_sep]
+      CSV.open fixture(filename), 'r', options[:col_sep]
     else
-      CSV.open path, options
+      CSV.open fixture(filename), options
     end
   end
 
@@ -29,6 +33,15 @@ class IntegrationTest < MiniTest::Unit::TestCase
     enumerable = FCC.conform open_csv('fcc.txt', :col_sep => '|')
     last       = enumerable.to_a.last
     assert_equal HashStruct.new(:name => 'LOS ANGELES, CA', :callsign => 'KVTU-LP', :latitude => '34 13 38.00 N', :signtal_type => 'digital'), last
+  end
+  
+  def test_instance_with_spreadsheet
+    book       = Spreadsheet.open fixture('states.xls')
+    sheet      = book.worksheet 0
+    schema     = Conformist.new { column :state, 0 }
+    enumerable = schema.conform sheet
+    last       = enumerable.to_a.last
+    assert_equal HashStruct.new(:state => 'QLD'), last
   end
   
   def test_instance_with_array_of_arrays

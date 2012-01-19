@@ -40,6 +40,15 @@ class ColumnTest < MiniTest::Unit::TestCase
     assert_equal 'a', column.values_in(['  a  '])
   end
   
+  def test_array
+    mock   = MiniTest::Mock.new
+    mock.expect :to_a, ['a']
+    column = Conformist::Column.new :foo, 0
+    assert_equal 'a', column.values_in(['a'])
+    assert_equal 'a', column.values_in('a')
+    assert_equal 'a', column.values_in(mock)
+  end
+  
   def test_nil
     column = Conformist::Column.new(:foo, 0)
     assert_nil column.values_in([])

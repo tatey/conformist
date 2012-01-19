@@ -8,8 +8,8 @@ module Conformist
       self.preprocessor = preprocessor
     end
     
-    def values_in array
-      values = array.values_at(*indexes).map do |value|
+    def values_in enumerable
+      values = Array(enumerable).values_at(*indexes).map do |value|
         if value.respond_to? :strip
           value.strip
         else
