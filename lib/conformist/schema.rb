@@ -43,6 +43,7 @@ module Conformist
       end
 
       def column *args, &block
+        args << columns.length if args.length == 1
         columns << Column.new(*args, &block)
       end
 

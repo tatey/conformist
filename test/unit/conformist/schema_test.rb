@@ -45,6 +45,13 @@ class Conformist::SchemaTest < MiniTest::Unit::TestCase
     assert_equal 2, definition.columns.size
   end
 
+  def test_column_with_implict_index
+    definition = Class.new { extend Schema }
+    definition.column :a
+    definition.column :b
+    assert_equal [0, 1], definition.columns.map { |column| column.indexes }.flatten
+  end
+
   def test_conform_returns_enumerable
     definition = Class.new { extend Schema }
     assert definition.conform([]).respond_to?(:each)
