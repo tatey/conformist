@@ -8,7 +8,7 @@ Bend CSVs to your will with declarative schemas. Map one or many columns, prepro
 
 ## Quick and Dirty Examples
 
-Open a CSV file and declare a schema.
+Open a CSV file and declare a schema. A schema is defined by `column` definitions which represent the input. Column definitions take an arbitary name followed by its position in the input. By default the schema assumes that the column ordering represents the ordering of the input.
 
 ``` ruby
 require 'conformist'
@@ -16,10 +16,10 @@ require 'csv'
 
 csv    = CSV.open '~/transmitters.csv'
 schema = Conformist.new do
-  column :callsign, 1
-  column :latitude, 1, 2, 3
-  column :longitude, 3, 4, 5
-  column :name, 0 do |value|
+  column :callsign
+  column :latitude
+  column :longitude
+  column :name do |value|
     value.upcase
   end
 end
