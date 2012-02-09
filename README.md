@@ -1,4 +1,4 @@
-# Conformist 
+# Conformist
 
 [![Build Status](https://secure.travis-ci.org/tatey/conformist.png)](http://travis-ci.org/tatey/conformist)
 
@@ -137,12 +137,24 @@ Class schemas are explicit. Class schemas were the only type available in earlie
 ``` ruby
 class Citizen
   extend Conformist
-  
+
   column :name, 0, 1
   column :email, 2
 end
 
 Citizen.conform [['Tate', 'Johnson', 'tate@tatey.com']]
+```
+
+### Implicit Indexing
+
+Column indexes are implicitly incremented when the index argument is omitted. Implicit indexing is all or nothing.
+
+``` ruby
+column :account_number                              # => 0
+column :date { |v| Time.new *v.split('/').reverse } # => 1
+column :description                                 # => 2
+column :debit                                       # => 3
+column :credit                                      # => 4
 ```
 
 ### Conform
@@ -231,7 +243,7 @@ end
 Virtual columns are not sourced from input. Omit the index to create a virtual column. Like real columns, virtual columns are included in the conformed output.
 
 ``` ruby
-column :day do 
+column :day do
   1
 end
 ```
@@ -316,14 +328,14 @@ See CHANGELOG.md for a full list of changes.
 
 ## Dependancies
 
-No explicit dependencies, although `CSV` or `FasterCSV` is commonly used.
+No explicit dependencies, although `CSV` and `Spreadsheet` are commonly used.
 
 ## Contributing
 
 1. Fork
 2. Install dependancies by running `$ bundle install`
 3. Write tests and code
-4. Make sure the tests pass by running `$ rake`
+4. Make sure the tests pass by running `$ bundle exec rake`
 5. Push and send a pull request on GitHub
 
 ## Motivation
