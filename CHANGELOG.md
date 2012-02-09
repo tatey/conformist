@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.1.3 / 2012-02-09
+
+* Column indexes are implicitly incremented when the index argument is omitted. Implicit indexing is all or nothing.
+
 ## 0.1.2 / 2012-01-19
 
 * `Conformist::Builder` coerces enumerables into an Array. Works with Spreadsheet for conforming Microsoft Excel spreadsheets.
