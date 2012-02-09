@@ -8,7 +8,7 @@ Bend CSVs to your will with declarative schemas. Map one or many columns, prepro
 
 ## Quick and Dirty Examples
 
-Open a CSV file and declare a schema.
+Open a CSV file and declare a schema. A schema compromises of columns. A column takes an arbitary name followed by its position in the input. A column may be derived from multiple positions.
 
 ``` ruby
 require 'conformist'
