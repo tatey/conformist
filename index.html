@@ -1,0 +1,437 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Conformist by tatey</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Conformist</h1>
+<p>Bend CSVs to your will with declarative schemas.</p>
+        <p class="view"><a href="https://github.com/tatey/conformist">View the Project on GitHub <small>tatey/conformist</small></a></p>
+        <ul>
+          <li><a href="https://github.com/tatey/conformist/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/tatey/conformist/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/tatey/conformist">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Conformist</h1>
+
+<p><a href="http://travis-ci.org/tatey/conformist"><img src="https://secure.travis-ci.org/tatey/conformist.png" alt="Build Status"></a></p>
+
+<p>Bend CSVs to your will with declarative schemas. Map one or many columns, preprocess cells and lazily enumerate. Declarative schemas are easier to understand, quicker to setup and independent of I/O. Use <a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/csv/rdoc/CSV.html">CSV</a> (Formally <a href="https://rubygems.org/gems/fastercsv">FasterCSV</a>), <a href="https://rubygems.org/gems/spreadsheet">Spreadsheet</a> or any array of array-like data structure.</p>
+
+<p><img src="http://f.cl.ly/items/00191n3O1J2E1a342F1L/conformist.jpg" alt=""></p>
+
+<h2>Quick and Dirty Examples</h2>
+
+<p>Open a CSV file and declare a schema. A schema compromises of columns. A column takes an arbitary name followed by its position in the input. A column may be derived from multiple positions.</p>
+
+<div class="highlight">
+<pre><span class="nb">require</span> <span class="s1">'conformist'</span>
+<span class="nb">require</span> <span class="s1">'csv'</span>
+
+<span class="n">csv</span>    <span class="o">=</span> <span class="no">CSV</span><span class="o">.</span><span class="n">open</span> <span class="s1">'~/transmitters.csv'</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="no">Conformist</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+  <span class="n">column</span> <span class="ss">:callsign</span><span class="p">,</span> <span class="mi">1</span>
+  <span class="n">column</span> <span class="ss">:latitude</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span>
+  <span class="n">column</span> <span class="ss">:longitude</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span>
+  <span class="n">column</span> <span class="ss">:name</span><span class="p">,</span> <span class="mi">0</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="o">|</span>
+    <span class="n">value</span><span class="o">.</span><span class="n">upcase</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Insert the transmitters into a SQLite database.</p>
+
+<div class="highlight">
+<pre><span class="nb">require</span> <span class="s1">'sqlite3'</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="no">SQLite3</span><span class="o">::</span><span class="no">Database</span><span class="o">.</span><span class="n">new</span> <span class="s1">'transmitters.db'</span>
+<span class="n">schema</span><span class="o">.</span><span class="n">conform</span><span class="p">(</span><span class="n">csv</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">transmitter</span><span class="o">|</span>
+  <span class="n">db</span><span class="o">.</span><span class="n">execute</span> <span class="s2">"INSERT INTO transmitters (callsign, ...) VALUES ('</span><span class="si">#{</span><span class="n">transmitter</span><span class="o">.</span><span class="n">callsign</span><span class="si">}</span><span class="s2">', ...);"</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Only insert the transmitters with the name "Mount Cooth-tha" using ActiveRecord or DataMapper.</p>
+
+<div class="highlight">
+<pre><span class="n">transmitters</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">conform</span><span class="p">(</span><span class="n">csv</span><span class="p">)</span><span class="o">.</span><span class="n">select</span> <span class="k">do</span> <span class="o">|</span><span class="n">transmitter</span><span class="o">|</span>
+  <span class="n">transmitter</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'Mount Coot-tha'</span>
+<span class="k">end</span>
+<span class="n">transmitter</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">transmitter</span><span class="o">|</span>
+  <span class="no">Transmitter</span><span class="o">.</span><span class="n">create!</span> <span class="n">transmitter</span><span class="o">.</span><span class="n">attributes</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Source from multiple, different input files and insert transmitters together into a single database.</p>
+
+<div class="highlight">
+<pre><span class="nb">require</span> <span class="s1">'conformist'</span>
+<span class="nb">require</span> <span class="s1">'csv'</span>
+<span class="nb">require</span> <span class="s1">'sqlite3'</span>
+
+<span class="n">au_schema</span> <span class="o">=</span> <span class="no">Conformist</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+  <span class="n">column</span> <span class="ss">:callsign</span><span class="p">,</span> <span class="mi">8</span>
+  <span class="n">column</span> <span class="ss">:latitude</span><span class="p">,</span> <span class="mi">10</span>
+<span class="k">end</span>
+<span class="n">us_schema</span> <span class="o">=</span> <span class="no">Conformist</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+  <span class="n">column</span> <span class="ss">:callsign</span><span class="p">,</span> <span class="mi">1</span>
+  <span class="n">column</span> <span class="ss">:latitude</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span>
+<span class="k">end</span>
+
+<span class="n">au_csv</span> <span class="o">=</span> <span class="no">CSV</span><span class="o">.</span><span class="n">open</span> <span class="s1">'~/au/transmitters.csv'</span>
+<span class="n">us_csv</span> <span class="o">=</span> <span class="no">CSV</span><span class="o">.</span><span class="n">open</span> <span class="s1">'~/us/transmitters.csv'</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="no">SQLite3</span><span class="o">::</span><span class="no">Database</span><span class="o">.</span><span class="n">new</span> <span class="s1">'transmitters.db'</span>
+
+<span class="o">[</span><span class="n">au_schema</span><span class="o">.</span><span class="n">conform</span><span class="p">(</span><span class="n">au_csv</span><span class="p">),</span> <span class="n">us_schema</span><span class="o">.</span><span class="n">conform</span><span class="p">(</span><span class="n">us_csv</span><span class="p">)</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">schema</span><span class="o">|</span>
+  <span class="n">schema</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">transmitter</span><span class="o">|</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span> <span class="s2">"INSERT INTO transmitters (callsign, ...) VALUES ('</span><span class="si">#{</span><span class="n">transmitter</span><span class="o">.</span><span class="n">callsign</span><span class="si">}</span><span class="s2">', ...);"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Open a Microsoft Excel spreadsheet and declare a schema.</p>
+
+<div class="highlight">
+<pre><span class="nb">require</span> <span class="s1">'conformist'</span>
+<span class="nb">require</span> <span class="s1">'spreadsheet'</span>
+
+<span class="n">book</span>   <span class="o">=</span> <span class="no">Spreadsheet</span><span class="o">.</span><span class="n">open</span> <span class="s1">'~/states.xls'</span>
+<span class="n">sheet</span>  <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">worksheet</span> <span class="mi">0</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="no">Conformist</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+  <span class="n">column</span> <span class="ss">:state</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="k">do</span> <span class="o">|</span><span class="n">values</span><span class="o">|</span>
+    <span class="s2">"</span><span class="si">#{</span><span class="n">values</span><span class="o">.</span><span class="n">first</span><span class="si">}</span><span class="s2">, </span><span class="si">#{</span><span class="n">values</span><span class="o">.</span><span class="n">last</span><span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+  <span class="n">column</span> <span class="ss">:capital</span><span class="p">,</span> <span class="mi">2</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Print each state's attributes to standard out.</p>
+
+<div class="highlight">
+<pre><span class="n">schema</span><span class="o">.</span><span class="n">conform</span><span class="p">(</span><span class="n">sheet</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">state</span><span class="o">|</span>
+  <span class="vg">$stdout</span><span class="o">.</span><span class="n">puts</span> <span class="n">state</span><span class="o">.</span><span class="n">attributes</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>For more examples see <a href="https://github.com/tatey/conformist/tree/master/test/fixtures">test/fixtures</a>, <a href="https://github.com/tatey/conformist/tree/master/test/schemas">test/schemas</a> and <a href="https://github.com/tatey/conformist/blob/master/test/unit/integration_test.rb">test/unit/integration_test.rb</a>.</p>
+
+<h2>Installation</h2>
+
+<p>Conformist is available as a gem. Install it at the command line.</p>
+
+<div class="highlight">
+<pre><span class="nv">$ </span><span class="o">[</span>sudo<span class="o">]</span> gem install conformist
+</pre>
+</div>
+
+
+<p>Or add it to your Gemfile and run <code>$ bundle install</code>.</p>
+
+<div class="highlight">
+<pre><span class="n">gem</span> <span class="s1">'conformist'</span>
+</pre>
+</div>
+
+
+<h2>Usage</h2>
+
+<h3>Anonymous Schema</h3>
+
+<p>Anonymous schemas are quick to declare and don't have the overhead of creating an explicit class.</p>
+
+<div class="highlight">
+<pre><span class="n">citizen</span> <span class="o">=</span> <span class="no">Conformist</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+  <span class="n">column</span> <span class="ss">:name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+  <span class="n">column</span> <span class="ss">:email</span><span class="p">,</span> <span class="mi">2</span>
+<span class="k">end</span>
+
+<span class="n">citizen</span><span class="o">.</span><span class="n">conform</span> <span class="o">[[</span><span class="s1">'Tate'</span><span class="p">,</span> <span class="s1">'Johnson'</span><span class="p">,</span> <span class="s1">'tate@tatey.com'</span><span class="o">]]</span>
+</pre>
+</div>
+
+
+<h3>Class Schema</h3>
+
+<p>Class schemas are explicit. Class schemas were the only type available in earlier versions of Conformist.</p>
+
+<div class="highlight">
+<pre><span class="k">class</span> <span class="nc">Citizen</span>
+  <span class="kp">extend</span> <span class="no">Conformist</span>
+
+  <span class="n">column</span> <span class="ss">:name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+  <span class="n">column</span> <span class="ss">:email</span><span class="p">,</span> <span class="mi">2</span>
+<span class="k">end</span>
+
+<span class="no">Citizen</span><span class="o">.</span><span class="n">conform</span> <span class="o">[[</span><span class="s1">'Tate'</span><span class="p">,</span> <span class="s1">'Johnson'</span><span class="p">,</span> <span class="s1">'tate@tatey.com'</span><span class="o">]]</span>
+</pre>
+</div>
+
+
+<h3>Implicit Indexing</h3>
+
+<p>Column indexes are implicitly incremented when the index argument is omitted. Implicit indexing is all or nothing.</p>
+
+<div class="highlight">
+<pre><span class="n">column</span> <span class="ss">:account_number</span>                              <span class="c1"># =&gt; 0</span>
+<span class="n">column</span> <span class="ss">:date</span> <span class="p">{</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="no">Time</span><span class="o">.</span><span class="n">new</span> <span class="o">*</span><span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'/'</span><span class="p">)</span><span class="o">.</span><span class="n">reverse</span> <span class="p">}</span> <span class="c1"># =&gt; 1</span>
+<span class="n">column</span> <span class="ss">:description</span>                                 <span class="c1"># =&gt; 2</span>
+<span class="n">column</span> <span class="ss">:debit</span>                                       <span class="c1"># =&gt; 3</span>
+<span class="n">column</span> <span class="ss">:credit</span>                                      <span class="c1"># =&gt; 4</span>
+</pre>
+</div>
+
+
+<h3>Conform</h3>
+
+<p>Conform is the principle method for lazily applying a schema to the given input.</p>
+
+<div class="highlight">
+<pre><span class="n">enumerator</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">conform</span> <span class="no">CSV</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">'~/file.csv'</span><span class="p">)</span>
+<span class="n">enumerator</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">row</span><span class="o">|</span>
+  <span class="nb">puts</span> <span class="n">row</span><span class="o">.</span><span class="n">attributes</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<h4>Input</h4>
+
+<p><code>#conform</code> expects any object that responds to <code>#each</code> to return an array-like object.</p>
+
+<div class="highlight">
+<pre><span class="no">CSV</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">'~/file.csv'</span><span class="p">)</span><span class="o">.</span><span class="n">responds_to?</span> <span class="ss">:each</span> <span class="c1"># =&gt; true</span>
+<span class="o">[[]</span><span class="p">,</span> <span class="o">[]</span><span class="p">,</span> <span class="o">[]].</span><span class="n">responds_to?</span> <span class="ss">:each</span>           <span class="c1"># =&gt; true</span>
+</pre>
+</div>
+
+
+<h4>Enumerator</h4>
+
+<p><code>#conform</code> is lazy, returning an <a href="http://www.ruby-doc.org/core-1.9.3/Enumerator.html">Enumerator</a>. Input is not parsed until you call <code>#each</code>, <code>#map</code> or any method defined in <a href="http://www.ruby-doc.org/core-1.9.3/Enumerable.html">Enumerable</a>. That means schemas can be assigned now and evaluated later. <code>#each</code> has the lowest memory footprint because it does not build a collection.</p>
+
+<h4>Struct</h4>
+
+<p>The argument passed into the block is a struct-like object. You can access columns as methods or keys. Columns were only accessible as keys in earlier versions of Conformist. Methods are now the preferred syntax.</p>
+
+<div class="highlight">
+<pre><span class="n">citizen</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span> <span class="c1"># =&gt; "Tate Johnson"</span>
+<span class="n">citizen</span><span class="o">.</span><span class="n">name</span>   <span class="c1"># =&gt; "Tate Johnson"</span>
+</pre>
+</div>
+
+
+<p>For convenience the <code>#attributes</code> method returns a hash of key-value pairs suitable for creating ActiveRecord or DataMapper records.</p>
+
+<div class="highlight">
+<pre><span class="n">citizen</span><span class="o">.</span><span class="n">attributes</span> <span class="c1"># =&gt; {:name =&gt; "Tate Johnson", :email =&gt; "tate@tatey.com"}</span>
+</pre>
+</div>
+
+
+<h3>One Column</h3>
+
+<p>Maps the first column in the input file to <code>:first_name</code>. Column indexing starts at zero.</p>
+
+<div class="highlight">
+<pre><span class="n">column</span> <span class="ss">:first_name</span><span class="p">,</span> <span class="mi">0</span>
+</pre>
+</div>
+
+
+<h3>Many Columns</h3>
+
+<p>Maps the first and second columns in the input file to <code>:name</code>.</p>
+
+<div class="highlight">
+<pre><span class="n">column</span> <span class="ss">:name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+</pre>
+</div>
+
+
+<p>Indexing is completely arbitrary and you can map any combination.</p>
+
+<div class="highlight">
+<pre><span class="n">column</span> <span class="ss">:name_and_city</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>
+</pre>
+</div>
+
+
+<p>Many columns are implicitly concatenated. Behaviour can be changed by passing a block. See <em>preprocessing</em>.</p>
+
+<h3>Preprocessing</h3>
+
+<p>Sometimes values need to be manipulated before they're conformed. Passing a block gets access to values. The return value of the block becomes the conformed output.</p>
+
+<div class="highlight">
+<pre><span class="n">column</span> <span class="ss">:name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="k">do</span> <span class="o">|</span><span class="n">values</span><span class="o">|</span>
+  <span class="n">values</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:upcase</span><span class="p">)</span> <span class="o">*</span> <span class="s1">' '</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>Works with one column too. Instead of getting a collection of objects, one object is passed to the block.</p>
+
+<div class="highlight">
+<pre><span class="n">column</span> <span class="ss">:first_name</span><span class="p">,</span> <span class="mi">0</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="o">|</span>
+  <span class="n">value</span><span class="o">.</span><span class="n">upcase</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<h3>Virtual Columns</h3>
+
+<p>Virtual columns are not sourced from input. Omit the index to create a virtual column. Like real columns, virtual columns are included in the conformed output.</p>
+
+<div class="highlight">
+<pre><span class="n">column</span> <span class="ss">:day</span> <span class="k">do</span>
+  <span class="mi">1</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<h3>Inheritance</h3>
+
+<p>Inheriting from a schema gives access to all of the parent schema's columns.</p>
+
+<h4>Anonymous Schema</h4>
+
+<p>Anonymous inheritance takes inspiration from Ruby's syntax for <a href="http://ruby-doc.org/core-1.9.3/Class.html#method-c-new">instantiating new classes</a>.</p>
+
+<div class="highlight">
+<pre><span class="n">parent</span> <span class="o">=</span> <span class="no">Conformist</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+  <span class="n">column</span> <span class="ss">:name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+<span class="k">end</span>
+
+<span class="n">child</span> <span class="o">=</span> <span class="no">Conformist</span><span class="o">.</span><span class="n">new</span> <span class="n">parent</span> <span class="k">do</span>
+  <span class="n">column</span> <span class="ss">:category</span> <span class="k">do</span>
+    <span class="s1">'Child'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<h4>Class Schema</h4>
+
+<p>Classical inheritance works as expected.</p>
+
+<div class="highlight">
+<pre><span class="k">class</span> <span class="nc">Parent</span>
+  <span class="kp">extend</span> <span class="no">Conformist</span>
+
+  <span class="n">column</span> <span class="ss">:name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Child</span> <span class="o">&lt;</span> <span class="no">Parent</span>
+  <span class="n">column</span> <span class="ss">:category</span> <span class="k">do</span>
+    <span class="s1">'Child'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<h2>Upgrading from &lt;= 0.0.3 to &gt;= 0.1.0</h2>
+
+<p>Where previously you had</p>
+
+<div class="highlight">
+<pre><span class="k">class</span> <span class="nc">Citizen</span>
+  <span class="kp">include</span> <span class="no">Conformist</span><span class="o">::</span><span class="no">Base</span>
+
+  <span class="n">column</span> <span class="ss">:name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+<span class="k">end</span>
+
+<span class="no">Citizen</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'~/file.csv'</span><span class="p">)</span><span class="o">.</span><span class="n">foreach</span> <span class="k">do</span> <span class="o">|</span><span class="n">citizen</span><span class="o">|</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>You should now do</p>
+
+<div class="highlight">
+<pre><span class="nb">require</span> <span class="s1">'fastercsv'</span>
+
+<span class="k">class</span> <span class="nc">Citizen</span>
+  <span class="kp">extend</span> <span class="no">Conformist</span>
+
+  <span class="n">column</span> <span class="ss">:name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+<span class="k">end</span>
+
+<span class="no">Citizen</span><span class="o">.</span><span class="n">conform</span><span class="p">(</span><span class="no">FasterCSV</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">'~/file.csv'</span><span class="p">))</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">citizen</span><span class="o">|</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>See CHANGELOG.md for a full list of changes.</p>
+
+<h2>Compatibility</h2>
+
+<ul>
+<li>MRI 1.9.2+</li>
+<li>MRI 1.8.7</li>
+<li>JRuby 1.6.5</li>
+</ul><h2>Dependancies</h2>
+
+<p>No explicit dependencies, although <code>CSV</code> and <code>Spreadsheet</code> are commonly used.</p>
+
+<h2>Contributing</h2>
+
+<ol>
+<li>Fork</li>
+<li>Install dependancies by running <code>$ bundle install</code>
+</li>
+<li>Write tests and code</li>
+<li>Make sure the tests pass by running <code>$ bundle exec rake</code>
+</li>
+<li>Push and send a pull request on GitHub</li>
+</ol><h2>Motivation</h2>
+
+<p>Motivation for this project came from the desire to simplify importing data from various government organisations into <a href="http://antennamate.com">Antenna Mate</a>. The data from each government was similar, but had completely different formatting. Some pieces of data needed preprocessing while others simply needed to be concatenated together. Not wanting to write a parser for each new government organisation, I created Conformist.</p>
+
+<h2>Copyright</h2>
+
+<p>Copyright © 2011 Tate Johnson. Conformist is released under the MIT license. See LICENSE for details.</p>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/tatey">tatey</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
