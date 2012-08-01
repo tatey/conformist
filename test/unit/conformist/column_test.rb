@@ -1,4 +1,5 @@
 require 'helper'
+require 'csv'
 
 class Conformist::ColumnTest < MiniTest::Unit::TestCase
   def stub_row
@@ -52,5 +53,11 @@ class Conformist::ColumnTest < MiniTest::Unit::TestCase
   def test_nil
     column = Column.new :foo, 0
     assert_nil column.values_in([])
+  end
+
+  def test_csv_row
+    row = ::CSV::Row.new ['header'], ['value']
+    column = Column.new :foo, 0
+    assert_equal 'value', column.values_in(row)
   end
 end
