@@ -10,6 +10,7 @@ module Conformist
     
     def values_in enumerable
       values = Array(enumerable).values_at(*indexes).map do |value|
+        value = value.last if value.is_a? Array
         if value.respond_to? :strip
           value.strip
         else

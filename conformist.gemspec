@@ -29,6 +29,10 @@ EOS
   s.add_development_dependency 'rake'
   s.add_development_dependency 'spreadsheet'
 
+  if ['1.8.7', 'java'].include? RUBY_VERSION
+    s.add_development_dependency 'fastercsv'
+  end
+
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }

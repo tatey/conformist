@@ -1,6 +1,6 @@
-require 'csv'
 require 'helper'
 require 'schemas/acma'
+require 'schemas/citizens'
 require 'schemas/fcc'
 require 'spreadsheet'
 
@@ -21,6 +21,12 @@ class IntegrationTest < MiniTest::Unit::TestCase
     enumerable = ACMA.conform open_csv('acma.csv')
     last       = enumerable.to_a.last
     assert_equal HashStruct.new(:name=>'CRAFERS', :callsign=>'ADS10', :latitude=>'34 58 57S'), last
+  end
+
+  def test_class_with_csv_including_headers
+    enumerable = Citizens.conform open_csv('citizens.csv', :headers => true)
+    last       = enumerable.to_a.last
+    assert_equal HashStruct.new(:name=>'Debbie', :age=>'26', :gender=>'Female'), last
   end
   
   def test_inherited_class_with_csv
