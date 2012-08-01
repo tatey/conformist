@@ -1,5 +1,4 @@
 require 'helper'
-require 'csv'
 
 class Conformist::ColumnTest < MiniTest::Unit::TestCase
   def stub_row

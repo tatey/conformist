@@ -1,4 +1,3 @@
-require 'csv'
 require 'helper'
 require 'schemas/acma'
 require 'schemas/citizens'
