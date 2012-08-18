@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Current
+
+* `Conformist::Schema#confrom` takes option to skip first row.
+
 ## 0.1.3 / 2012-02-09
 
 * Column indexes are implicitly incremented when the index argument is omitted. Implicit indexing is all or nothing.

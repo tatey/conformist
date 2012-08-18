@@ -177,6 +177,15 @@ CSV.open('~/file.csv').responds_to? :each # => true
 [[], [], []].responds_to? :each           # => true
 ```
 
+#### Header Row
+
+`#conform` takes an option to skip the first row of input. Given a typical CSV document,
+the first row is the header row and irrelelvant for enumeration.
+
+``` ruby
+schema.conform CSV.open('~/file_with_headers.csv'), :skip_first => true
+```
+
 #### Enumerator
 
 `#conform` is lazy, returning an [Enumerator](http://www.ruby-doc.org/core-1.9.3/Enumerator.html). Input is not parsed until you call `#each`, `#map` or any method defined in [Enumerable](http://www.ruby-doc.org/core-1.9.3/Enumerable.html). That means schemas can be assigned now and evaluated later. `#each` has the lowest memory footprint because it does not build a collection.
