@@ -15,10 +15,6 @@ module Conformist
         base.builder = builder.dup
         base.columns = columns.dup
       end
-
-      def load *args
-        raise "``#{self.class}.load` has been removed, use something like `#{self.class}.conform(file).each(&block)` instead (#{caller.first})"
-      end
     end
 
     module InstanceExtensions
