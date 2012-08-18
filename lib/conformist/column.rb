@@ -1,13 +1,13 @@
 module Conformist
   class Column
     attr_accessor :name, :indexes, :preprocessor
-        
+
     def initialize name, *indexes, &preprocessor
       self.name         = name
       self.indexes      = indexes
       self.preprocessor = preprocessor
     end
-    
+
     def values_in enumerable
       values = Array(enumerable).values_at(*indexes).map do |value|
         if value.respond_to? :strip
@@ -15,8 +15,8 @@ module Conformist
         else
           value
         end
-      end    
-      values = values.first if values.size == 1  
+      end
+      values = values.first if values.size == 1
       if preprocessor
         preprocessor.call values
       else

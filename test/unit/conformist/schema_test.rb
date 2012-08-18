@@ -17,7 +17,7 @@ class Conformist::SchemaTest < MiniTest::Unit::TestCase
     end
     assert_equal 2, anonymous.columns.size
   end
-  
+
   def test_builder_reader
     assert_equal Builder, Class.new { extend Schema }.builder
   end
@@ -78,7 +78,7 @@ class Conformist::SchemaTest < MiniTest::Unit::TestCase
     assert_equal [0, 1], child1.columns
     assert_equal [0, 2], child2.columns
   end
-  
+
   def test_load
     assert_raises RuntimeError do
       Class.new { extend Schema }.load

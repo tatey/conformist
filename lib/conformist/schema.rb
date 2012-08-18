@@ -4,23 +4,23 @@ module Conformist
       base.send :include, InstanceExtensions
       base.send :include, Methods
     end
-    
+
     def self.extended base
       base.extend ClassExtensions
       base.extend Methods
     end
-    
+
     module ClassExtensions
       def inherited base
         base.builder = builder.dup
         base.columns = columns.dup
       end
-      
+
       def load *args
         raise "``#{self.class}.load` has been removed, use something like `#{self.class}.conform(file).each(&block)` instead (#{caller.first})"
       end
     end
-    
+
     module InstanceExtensions
       def initialize super_schema = nil, &block
         if super_schema
@@ -32,7 +32,7 @@ module Conformist
         end
       end
     end
-    
+
     module Methods
       def builder
         @builder ||= Builder
@@ -63,7 +63,7 @@ module Conformist
             yielder.yield builder.call(self, enumerable)
           end
         end
-      end      
+      end
     end
   end
 end

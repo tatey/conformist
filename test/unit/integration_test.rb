@@ -29,19 +29,19 @@ class IntegrationTest < MiniTest::Unit::TestCase
     first      = enumerable.to_a.first
     assert_equal HashStruct.new(:name => 'Aaron', :age => '21', :gender => 'Male'), first
   end
-  
+
   def test_inherited_class_with_csv
     enumerable = ACMA::Digital.conform open_csv('acma.csv')
     last       = enumerable.to_a.last
     assert_equal HashStruct.new(:name=>'CRAFERS', :callsign=>'ADS10', :latitude=>'34 58 57S', :signal_type => 'digital'), last
   end
-  
+
   def test_class_with_psv
     enumerable = FCC.conform open_csv('fcc.txt', :col_sep => '|')
     last       = enumerable.to_a.last
     assert_equal HashStruct.new(:name => 'LOS ANGELES, CA', :callsign => 'KVTU-LP', :latitude => '34 13 38.00 N', :signtal_type => 'digital'), last
   end
-  
+
   def test_instance_with_spreadsheet
     book       = Spreadsheet.open fixture('states.xls')
     sheet      = book.worksheet 0
@@ -50,7 +50,7 @@ class IntegrationTest < MiniTest::Unit::TestCase
     last       = enumerable.to_a.last
     assert_equal HashStruct.new(:state => 'QLD'), last
   end
-  
+
   def test_instance_with_array_of_arrays
     data = Array.new.tap do |d|
       d << ['NSW', 'New South Wales', 'Sydney']
@@ -67,7 +67,7 @@ class IntegrationTest < MiniTest::Unit::TestCase
     last = enumerable.to_a.last
     assert_equal HashStruct.new(:state => 'QLD, Queensland', :capital => 'Brisbane'), last
   end
-  
+
   def test_inherited_instance_with_array_of_arrays
     data = Array.new.tap do |d|
       d << ['NSW', 'New South Wales', 'Sydney']
