@@ -25,9 +25,9 @@ class IntegrationTest < MiniTest::Unit::TestCase
   end
 
   def test_class_with_csv_including_headers
-    enumerable = Citizens.conform open_csv('citizens.csv', :headers => true)
-    last       = enumerable.to_a.last
-    assert_equal HashStruct.new(:name=>'Debbie', :age=>'26', :gender=>'Female'), last
+    enumerable = Citizens.conform open_csv('citizens.csv'), :skip_first => true
+    first      = enumerable.to_a.first
+    assert_equal HashStruct.new(:name => 'Aaron', :age => '21', :gender => 'Male'), first
   end
   
   def test_inherited_class_with_csv

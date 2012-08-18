@@ -55,9 +55,11 @@ module Conformist
         @columns = value
       end
 
-      def conform enumerables
+      def conform enumerables, options = {}
+        options = options.dup
         Enumerator.new do |yielder|
           enumerables.each do |enumerable|
+            next if options.delete :skip_first
             yielder.yield builder.call(self, enumerable)
           end
         end

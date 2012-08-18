@@ -58,6 +58,12 @@ class Conformist::SchemaTest < MiniTest::Unit::TestCase
     assert definition.conform([]).respond_to?(:map)
   end
 
+  def test_conform_skip_first
+    definition = Class.new { extend Schema }
+    definition.column :a, 0
+    assert_equal HashStruct.new({:a => 'value'}), definition.conform(['header', 'value'], :skip_first => true).first
+  end
+
   def test_conform_calls_builders_call_method
     definition = Class.new { extend Schema }
     definition.builder = lambda { |definition, value| value }
