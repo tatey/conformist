@@ -8,7 +8,7 @@ Bend CSVs to your will with declarative schemas. Map one or many columns, prepro
 
 ## Quick and Dirty Examples
 
-Open a CSV file and declare a schema. A schema compromises of columns. A column takes an arbitary name followed by its position in the input. A column may be derived from multiple positions.
+Open a CSV file and declare a schema. A schema compromises of columns. A column takes an arbitrary name followed by its position in the input. A column may be derived from multiple positions.
 
 ``` ruby
 require 'conformist'
@@ -180,7 +180,7 @@ CSV.open('~/file.csv').responds_to? :each # => true
 #### Header Row
 
 `#conform` takes an option to skip the first row of input. Given a typical CSV document,
-the first row is the header row and irrelelvant for enumeration.
+the first row is the header row and irrelevant for enumeration.
 
 ``` ruby
 schema.conform CSV.open('~/file_with_headers.csv'), :skip_first => true
@@ -335,7 +335,7 @@ See CHANGELOG.md for a full list of changes.
 * MRI 1.8.7
 * JRuby 1.6.5
 
-## Dependancies
+## Dependencies
 
 No explicit dependencies, although `CSV` and `Spreadsheet` are commonly used.
 
