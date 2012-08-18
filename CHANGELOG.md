@@ -3,6 +3,7 @@
 ## Current
 
 * `Conformist::Schema#confrom` takes option to skip first row.
+* Removed deprecated classes and warnings.
 
 ## 0.1.3 / 2012-02-09
 
