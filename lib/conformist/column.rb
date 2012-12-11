@@ -5,48 +5,28 @@ module Conformist
     def initialize name, *source_columns, &preprocessor
       self.name           = name
       self.source_columns = source_columns
-      self.preprocessor   = preprocessor || lambda{|value| value}
+      self.preprocessor   = preprocessor || lambda{|a| a}
     end
 
     def values_in enumerable
-      preprocessor.call(values_in_object(enumerable))
-    end
-  end
-
-protected
-
-  def values_in_hashlike_object(enumerable)
-    values = source_columns.collect do |source_column|
-      enumerable[source_column]
-    end
-    values.size == 1 ? values.first : values
-  end
-
-  def values_in_arraylike_object(enumerable)
-    values = Array(enumerable).values_at(*source_columns).collect do |value|
-      value = value.last if value.is_a?(Array)
-      value.respond_to?(:strip) ? value.strip : value
-    end
-    values.size == 1 ? values.first : values
-  end
-
-  def values_in_structlike_object(enumerable)
-    values = source_columns.collect do |source_column|
-      enumerable.send(source_column)
-    end
-    values.size == 1 ? values.first : values
-  end
-
-  def values_in_object(enumerable)
-    if enumerable.respond_to?(:[])
-      if /^(\d+)$/.match(source_columns.first.to_s) && /^(\d+)$/.match(source_columns.first.to_s).captures
-        values_in_arraylike_object(enumerable)
-      else
-        values_in_hashlike_object(enumerable)
+      enumerable = Array(enumerable)
+      values = source_columns.collect do |source_column|
+        value = (
+          if enumerable.first.is_a?(Array)
+            if detected_header_value_pair = enumerable.detect{|header_value_pair| header_value_pair.first == source_column}
+              detected_header_value_pair.last
+            else
+              nil
+            end
+          else
+            enumerable[source_column]
+          end
+        )
+        value.respond_to?(:strip) ? value.strip : value
       end
-    else
-      values_in_structlike_object(enumerable)
+      values = values.size == 1 ? values.first : values
+      preprocessor.call(values)
     end
-  end
 
+  end
 end

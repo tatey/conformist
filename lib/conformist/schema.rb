@@ -24,7 +24,7 @@ module Conformist
           self.columns = super_schema.columns.dup
         end
         if block
-          instance_eval &block 
+          instance_eval &block
         end
       end
     end
