@@ -8,8 +8,9 @@ Bend CSVs to your will with declarative schemas. Map one or many columns, prepro
 
 ## Quick and Dirty Examples
 
-Open a CSV file and declare a schema. A schema compromises of columns. A column takes an arbitrary name followed by its position in the input. A column may be derived from multiple positions.
+Open a CSV file and declare a schema. A schema compromises of columns. A column takes an arbitrary name followed either by its position in the input or it's column name if headers are supplied. A column may be derived from multiple positions.
 
+Selecting By Position
 ``` ruby
 require 'conformist'
 require 'csv'
@@ -23,7 +24,20 @@ schema = Conformist.new do
     value.upcase
   end
 end
-```
+
+Selecting By Name
+``` ruby
+class Human
+  extend Conformist
+
+  def self.name
+    lambda{|values| values[0] + ' ' + values[1]}
+  end
+
+  column :name, 'first_name', 'last_name', &name
+  column :age, 'age'
+  column :gender, 'gender'
+end
 
 Insert the transmitters into a SQLite database.
 
@@ -42,7 +56,7 @@ Only insert the transmitters with the name "Mount Cooth-tha" using ActiveRecord 
 transmitters = schema.conform(csv).select do |transmitter|
   transmitter.name == 'Mount Coot-tha'
 end
-transmitter.each do |transmitter|
+transmitters.each do |transmitter|
   Transmitter.create! transmitter.attributes
 end
 ```
@@ -159,7 +173,7 @@ column :credit                                      # => 4
 
 ### Conform
 
-Conform is the principle method for lazily applying a schema to the given input.
+Conform is the principal method for lazily applying a schema to the given input.
 
 ``` ruby
 enumerator = schema.conform CSV.open('~/file.csv')
