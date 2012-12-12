@@ -11,6 +11,7 @@ Bend CSVs to your will with declarative schemas. Map one or many columns, prepro
 Open a CSV file and declare a schema. A schema compromises of columns. A column takes an arbitrary name followed either by its position in the input or it's column name if headers are supplied. A column may be derived from multiple positions.
 
 Selecting By Position
+
 ``` ruby
 require 'conformist'
 require 'csv'
@@ -24,8 +25,10 @@ schema = Conformist.new do
     value.upcase
   end
 end
+``` 
 
 Selecting By Name
+
 ``` ruby
 class Human
   extend Conformist
@@ -38,6 +41,7 @@ class Human
   column :age, 'age'
   column :gender, 'gender'
 end
+```
 
 Insert the transmitters into a SQLite database.
 
