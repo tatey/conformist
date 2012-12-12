@@ -16,7 +16,7 @@ module Conformist
             if detected_header_value_pair = enumerable.detect{|header_value_pair| header_value_pair.first == source_column}
               detected_header_value_pair.last
             else
-              nil
+              enumerable[source_column].last
             end
           else
             enumerable[source_column]

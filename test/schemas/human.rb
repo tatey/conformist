@@ -6,6 +6,6 @@ class Human
   end
 
   column :name, 'first_name', 'last_name', &name
-  column :age, 'age'
+  column :age, 2
   column :gender, 'gender'
 end
