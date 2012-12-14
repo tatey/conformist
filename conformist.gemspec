@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.8.7'
 
   s.add_development_dependency 'minitest'
+  s.add_development_dependency 'pry'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'spreadsheet'
 
