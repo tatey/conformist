@@ -3,6 +3,7 @@ require 'schemas/acma'
 require 'schemas/citizens'
 require 'schemas/fcc'
 require 'schemas/human'
+require 'schemas/human_with_range'
 require 'spreadsheet'
 
 class IntegrationTest < MiniTest::Unit::TestCase
@@ -53,7 +54,13 @@ class IntegrationTest < MiniTest::Unit::TestCase
 
   def test_class_with_named_source_columns
     enumerables = Human.conform open_csv('humans.csv', :headers => true), :skip_first => true
-    last       = enumerables.to_a.last
+    last        = enumerables.to_a.last
+    assert_equal HashStruct.new(:name => 'Debbie Dobson', :age => '26', :gender => 'Female'), last
+  end
+
+  def test_class_with_source_columns_as_ranges
+    enumerables = HumanWithRange.conform open_csv('humans.csv', :headers => true), :skip_first => true
+    last        = enumerables.to_a.last
     assert_equal HashStruct.new(:name => 'Debbie Dobson', :age => '26', :gender => 'Female'), last
   end
 

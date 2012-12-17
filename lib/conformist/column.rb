@@ -10,7 +10,8 @@ module Conformist
 
     def values_in enumerable
       enumerable = Array(enumerable)
-      values = source_columns.collect do |source_column|
+      source_columns.collect!{|source_column| source_column.is_a?(Range) ? source_column.to_a : source_column}
+      values = source_columns.flatten.collect do |source_column|
         value = (
           if enumerable.first.is_a?(Array)
             if detected_header_value_pair = enumerable.detect{|header_value_pair| header_value_pair.first == source_column}
