@@ -65,8 +65,8 @@ class Conformist::ColumnTest < MiniTest::Unit::TestCase
 
   def test_associative_arraylike_object # such as CSV::Row when to_a() is applied to it.  
     mock_aa = MiniTest::Mock.new
-    mock_aa.expect :to_a, [['a', 1], ['b', 2]] {[['a', 1], ['b', 2]]}
-    mock_aa.expect :detect, ['a', 1] {[['a', 1], ['b', 2]]}
+    mock_aa.expect :to_a, [['a', 1], ['b', 2]]
+    mock_aa.expect :detect, ['a', 1], [['a', 1], ['b', 2]]
     column = Column.new :foo, 'a'
     assert_equal 1, column.values_in([['a', 1]])
     assert_equal 1, column.values_in(mock_aa)
