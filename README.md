@@ -344,8 +344,14 @@ No explicit dependencies, although `CSV` and `Spreadsheet` are commonly used.
 1. Fork
 2. Install dependancies by running `$ bundle install`
 3. Write tests and code
-4. Make sure the tests pass by running `$ bundle exec rake`
-5. Push and send a pull request on GitHub
+4. Make sure the tests pass locally by running `$ bundle exec rake`
+5. Push to GitHub and make sure continuous integration tests pass at
+   https://travis-ci.org/tatey/conformist/pull_requests
+5. Send a pull request on GitHub
+
+Please do not increment the version number in `lib/conformist/version.rb`.
+The version number will be incremented by the maintainer after the patch
+is accepted.
 
 ## Motivation
 
