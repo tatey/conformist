@@ -331,9 +331,9 @@ See CHANGELOG.md for a full list of changes.
 
 ## Compatibility
 
-* MRI 1.9.2+
+* MRI 2.0.0, 1.9.3, 1.9.2, 1.8.7
 * MRI 1.8.7
-* JRuby 1.6.5
+* JRuby 1.6.5+
 
 ## Dependencies
 
