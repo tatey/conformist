@@ -1,6 +1,7 @@
 # Conformist
 
 [![Build Status](https://secure.travis-ci.org/tatey/conformist.png)](http://travis-ci.org/tatey/conformist)
+[![Code Climate](https://codeclimate.com/github/tatey/conformist.png)](https://codeclimate.com/github/tatey/conformist)
 
 Bend CSVs to your will with declarative schemas. Map one or many columns, preprocess cells and lazily enumerate. Declarative schemas are easier to understand, quicker to setup and independent of I/O. Use [CSV](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/csv/rdoc/CSV.html) (Formally [FasterCSV](https://rubygems.org/gems/fastercsv)), [Spreadsheet](https://rubygems.org/gems/spreadsheet) or any array of array-like data structure.
 
