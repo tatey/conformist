@@ -49,7 +49,7 @@ class Conformist::SchemaTest < MiniTest::Unit::TestCase
     definition = Class.new { extend Schema }
     definition.column :a
     definition.column :b
-    assert_equal [0, 1], definition.columns.map { |column| column.indexes }.flatten
+    assert_equal [0, 1], definition.columns.map { |column| column.source_columns }.flatten
   end
 
   def test_conform_returns_enumerable
@@ -61,7 +61,7 @@ class Conformist::SchemaTest < MiniTest::Unit::TestCase
   def test_conform_skip_first
     definition = Class.new { extend Schema }
     definition.column :a, 0
-    assert_equal HashStruct.new({:a => 'value'}), definition.conform(['header', 'value'], :skip_first => true).first
+    assert_equal HashStruct.new({:a => 'value_0'}), definition.conform([['header_0', 'header_1'], ['value_0', 'value_1']], :skip_first => true).first
   end
 
   def test_conform_calls_builders_call_method

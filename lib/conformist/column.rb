@@ -1,27 +1,33 @@
 module Conformist
   class Column
-    attr_accessor :name, :indexes, :preprocessor
+    attr_accessor :name, :source_columns, :preprocessor
 
-    def initialize name, *indexes, &preprocessor
-      self.name         = name
-      self.indexes      = indexes
-      self.preprocessor = preprocessor
+    def initialize name, *source_columns, &preprocessor
+      self.name           = name
+      self.source_columns = source_columns
+      self.preprocessor   = preprocessor || lambda{|a| a}
     end
 
     def values_in enumerable
-      values = Array(enumerable).values_at(*indexes).map do |value|
-        if value.respond_to? :strip
-          value.strip
-        else
-          value
-        end
+      enumerable = Array(enumerable)
+      source_columns.collect!{|source_column| source_column.is_a?(Range) ? source_column.to_a : source_column}
+      values = source_columns.flatten.collect do |source_column|
+        value = (
+          if enumerable.first.is_a?(Array)
+            if detected_header_value_pair = enumerable.detect{|header_value_pair| header_value_pair.first == source_column}
+              detected_header_value_pair.last
+            else
+              enumerable[source_column].last
+            end
+          else
+            enumerable[source_column]
+          end
+        )
+        value.respond_to?(:strip) ? value.strip : value
       end
-      values = values.first if values.size == 1
-      if preprocessor
-        preprocessor.call values
-      else
-        values
-      end
+      values = values.size == 1 ? values.first : values
+      preprocessor.call(values)
     end
+
   end
 end
