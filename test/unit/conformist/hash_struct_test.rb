@@ -1,6 +1,6 @@
 require 'helper'
 
-class Conformist::HashStructTest < MiniTest::Unit::TestCase
+class Conformist::HashStructTest < Minitest::Test
   def test_initialize
     assert_equal({:a => 1}, HashStruct.new({:a => 1}).attributes)
     assert_empty HashStruct.new.attributes
@@ -17,9 +17,9 @@ class Conformist::HashStructTest < MiniTest::Unit::TestCase
   def test_equality
     hash1 = HashStruct.new :a => 1
     hash2 = HashStruct.new :a => 1
-    hash3 = MiniTest::Mock.new
+    hash3 = Minitest::Mock.new
     hash3.expect :attributes, {:a => 1}
-    hash3.expect :class, MiniTest::Mock
+    hash3.expect :class, Minitest::Mock
     assert_equal hash1, hash2
     refute_equal hash1, hash3
   end

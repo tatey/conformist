@@ -1,6 +1,6 @@
 require 'helper'
 
-class Conformist::ColumnTest < MiniTest::Unit::TestCase
+class Conformist::ColumnTest < Minitest::Test
   def stub_row
     ('a'..'d').to_a
   end
@@ -41,7 +41,7 @@ class Conformist::ColumnTest < MiniTest::Unit::TestCase
   end
 
   def test_array
-    mock   = MiniTest::Mock.new
+    mock   = Minitest::Mock.new
     mock.expect :to_a, ['a']
     column = Column.new :foo, 0
     assert_equal 'a', column.values_in(['a'])

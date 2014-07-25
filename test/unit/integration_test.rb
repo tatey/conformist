@@ -5,7 +5,7 @@ require 'schemas/citizens'
 require 'schemas/fcc'
 require 'spreadsheet'
 
-class IntegrationTest < MiniTest::Unit::TestCase
+class IntegrationTest < Minitest::Test
   def fixture filename
     File.expand_path "../../fixtures/#{filename}", __FILE__
   end

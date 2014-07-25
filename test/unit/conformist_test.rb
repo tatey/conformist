@@ -1,6 +1,6 @@
 require 'helper'
 
-class ConformistTest < MiniTest::Unit::TestCase
+class ConformistTest < Minitest::Test
   def test_extended
     definition = Class.new { extend Conformist }
     assert definition.respond_to?(:builder)
