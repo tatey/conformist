@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Current
+
+* Dropped support for Ruby 1.8.7, 1.9.2.
+
 ## 0.2.0 / 2012-08-18
 
 * `Conformist::Schema#confrom` takes option to skip first row.
