@@ -43,7 +43,7 @@ Only insert the transmitters with the name "Mount Cooth-tha" using ActiveRecord 
 transmitters = schema.conform(csv).select do |transmitter|
   transmitter.name == 'Mount Coot-tha'
 end
-transmitter.each do |transmitter|
+transmitters.each do |transmitter|
   Transmitter.create! transmitter.attributes
 end
 ```
