@@ -3,6 +3,7 @@ require 'helper'
 require 'schemas/acma'
 require 'schemas/citizens'
 require 'schemas/fcc'
+require 'schemas/relation_lookup'
 require 'spreadsheet'
 
 class IntegrationTest < Minitest::Test
@@ -81,12 +82,18 @@ class IntegrationTest < Minitest::Test
       column :capital, 2
     end
     child = Conformist.new parent do
-      column :country do 
+      column :country do
         'Australia'
       end
     end
     enumerable = child.conform data
     last = enumerable.to_a.last
     assert_equal HashStruct.new(:state => 'QLD, Queensland', :capital => 'Brisbane', :country => 'Australia'), last
+  end
+
+  def test_instance_with_additional_attrs_for_preprocessor
+    enumerable = RelationLookup.conform open_csv('citizens.csv'), :skip_first => true
+    first = enumerable.to_a.first
+    assert_equal HashStruct.new(:name => 'Aaron, 21, (observed by 007)'), first
   end
 end

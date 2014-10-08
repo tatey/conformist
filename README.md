@@ -248,6 +248,17 @@ column :first_name, 0 do |value|
 end
 ```
 
+Pass in non-Integer parameters to the column macro and these are made available to the block without any processing.
+
+``` ruby
+attr_accessor :tenant_id
+
+column :first_name, 0, { tenant_id: tenant_id} do |value|
+  result = values[0].upcase
+  result << Tenant.find(id: values[1]).name
+end
+```
+
 ### Virtual Columns
 
 Virtual columns are not sourced from input. Omit the index to create a virtual column. Like real columns, virtual columns are included in the conformed output.

@@ -49,7 +49,7 @@ class Conformist::SchemaTest < Minitest::Test
     definition = Class.new { extend Schema }
     definition.column :a
     definition.column :b
-    assert_equal [0, 1], definition.columns.map { |column| column.indexes }.flatten
+    assert_equal [0, 1], definition.columns.map { |column| column.attrs }.flatten
   end
 
   def test_conform_returns_enumerable
