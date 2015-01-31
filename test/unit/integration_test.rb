@@ -81,12 +81,23 @@ class IntegrationTest < Minitest::Test
       column :capital, 2
     end
     child = Conformist.new parent do
-      column :country do 
+      column :country do
         'Australia'
       end
     end
     enumerable = child.conform data
     last = enumerable.to_a.last
     assert_equal HashStruct.new(:state => 'QLD, Queensland', :capital => 'Brisbane', :country => 'Australia'), last
+  end
+
+  def test_named_columns
+    schema = Conformist.new do
+      column :name, 'Name'
+      column :age, 'Age'
+      column :gender, 'Gender'
+    end
+    enumerable = schema.conform open_csv('citizens.csv'), :skip_first => true
+    first      = enumerable.to_a.first
+    assert_equal HashStruct.new(:name => 'Aaron', :age => '21', :gender => 'Male'), first
   end
 end
