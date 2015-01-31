@@ -1,4 +1,4 @@
-module Conformist  
+module Conformist
   module Schema
     def self.included base
       base.send :include, InstanceExtensions
@@ -24,7 +24,7 @@ module Conformist
           self.columns = super_schema.columns.dup
         end
         if block
-          instance_eval &block 
+          instance_eval &block
         end
       end
     end
@@ -53,9 +53,14 @@ module Conformist
 
       def conform enumerables, options = {}
         options = options.dup
+
         Enumerator.new do |yielder|
           enumerables.each do |enumerable|
-            next if options.delete :skip_first
+            if options.delete :skip_first
+              columns.each {|column| column.calculate_indices!(enumerable) }
+              next
+            end
+
             yielder.yield builder.call(self, enumerable)
           end
         end

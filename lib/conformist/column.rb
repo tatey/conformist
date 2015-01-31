@@ -1,11 +1,24 @@
 module Conformist
   class Column
-    attr_accessor :name, :indexes, :preprocessor
+    attr_accessor :name, :sources, :indexes, :preprocessor
 
-    def initialize name, *indexes, &preprocessor
+    def initialize name, *sources, &preprocessor
       self.name         = name
-      self.indexes      = indexes
+      self.sources      = sources
+      self.indexes      = sources
       self.preprocessor = preprocessor
+    end
+
+    def calculate_indices!(headers)
+      headers = Array(headers).collect {|header| header.to_s.downcase.squeeze.strip }
+
+      self.indexes = sources.collect do |source|
+        if source.is_a?(String)
+          headers.index(source.downcase)
+        else
+          source
+        end
+      end.compact
     end
 
     def values_in enumerable

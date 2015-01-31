@@ -187,6 +187,20 @@ the first row is the header row and irrelevant for enumeration.
 schema.conform CSV.open('~/file_with_headers.csv'), :skip_first => true
 ```
 
+#### Named Columns
+
+Strings can be used as column indexes instead of integers. These strings will be matched
+against the first row to determine the appropriate numerical index.
+
+``` ruby
+citizen = Conformist.new do
+  column :email, 'EM'
+  column :name, 'FN', 'LN'
+end
+
+citizen.conform [['FN', 'LN', 'EM'], ['Tate', 'Johnson', 'tate@tatey.com']], :skip_first => true
+```
+
 #### Enumerator
 
 `#conform` is lazy, returning an [Enumerator](http://www.ruby-doc.org/core-1.9.3/Enumerator.html). Input is not parsed until you call `#each`, `#map` or any method defined in [Enumerable](http://www.ruby-doc.org/core-1.9.3/Enumerable.html). That means schemas can be assigned now and evaluated later. `#each` has the lowest memory footprint because it does not build a collection.
