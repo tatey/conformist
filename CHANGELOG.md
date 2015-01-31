@@ -1,7 +1,8 @@
 # CHANGELOG
 
-## Current
+## 0.2.1 / 2015-01-31
 
+* Add support for named columns. (@rywall)
 * Dropped support for Ruby 1.8.7, 1.9.2.
 
 ## 0.2.0 / 2012-08-18
@@ -11,7 +12,7 @@
 
 ## 0.1.3 / 2012-02-09
 
-* Column indexes are implicitly incremented when the index argument is omitted. Implicit indexing is all or nothing.
+* Column indexes are implicitly incremented when the index argument is omitted. Implicit indexing is all or nothing. (@coop)
 
 ## 0.1.2 / 2012-01-19
 
