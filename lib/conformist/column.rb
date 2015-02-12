@@ -18,11 +18,15 @@ module Conformist
         else
           source
         end
-      end.compact
+      end
     end
 
     def values_in enumerable
-      values = Array(enumerable).values_at(*indexes).map do |value|
+      enumerable = Array(enumerable)
+
+      values = Array(indexes).map do |index|
+        value = enumerable.at(index) if index
+
         if value.respond_to? :strip
           value.strip
         else
