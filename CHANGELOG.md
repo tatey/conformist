@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.2 / 2015-02-12
+
+* Don't munge headers. (@rywall)
+
 ## 0.2.1 / 2015-01-31
 
 * Add support for named columns. (@rywall)
