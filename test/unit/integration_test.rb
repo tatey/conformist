@@ -100,4 +100,13 @@ class IntegrationTest < Minitest::Test
     first      = enumerable.to_a.first
     assert_equal HashStruct.new(:name => 'Aaron', :age => '21', :gender => 'Male'), first
   end
+
+  def test_missing_named_column
+    schema = Conformist.new do
+      column :state, 'State'
+    end
+    enumerable = schema.conform open_csv('citizens.csv'), :skip_first => true
+    first      = enumerable.to_a.first
+    assert_equal HashStruct.new(:state => nil), first
+  end
 end
