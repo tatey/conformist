@@ -10,7 +10,7 @@ module Conformist
     end
 
     def calculate_indices!(headers)
-      headers = Array(headers).collect {|header| header.to_s.downcase }
+      headers = Array(headers).collect {|header| header.to_s.downcase.squeeze(' ').strip }
 
       self.indexes = sources.collect do |source|
         if source.is_a?(String)
