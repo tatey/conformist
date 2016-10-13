@@ -41,12 +41,9 @@ class Conformist::ColumnTest < Minitest::Test
   end
 
   def test_array
-    mock   = Minitest::Mock.new
-    mock.expect :to_a, ['a']
     column = Column.new :foo, 0
     assert_equal 'a', column.values_in(['a'])
     assert_equal 'a', column.values_in('a')
-    assert_equal 'a', column.values_in(mock)
   end
 
   def test_nil
