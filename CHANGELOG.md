@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.2.4 / 2016-10-14
+
+* Speed up processing large amounts of columns (@splattael)
+* Official support for Ruby 2.3.1 (@splattael)
+
 ## 0.2.3 / 2015-03-04
 
 * Always return nil when named column isn't found. (@rywall)

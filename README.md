@@ -346,7 +346,7 @@ See CHANGELOG.md for a full list of changes.
 
 ## Compatibility
 
-* MRI 2.2.0, 2.1.0, 2.0.0, 1.9.3
+* MRI 2.3.1, 2.2.0, 2.1.0, 2.0.0, 1.9.3
 * JRuby
 
 ## Dependencies
@@ -373,4 +373,4 @@ Motivation for this project came from the desire to simplify importing data from
 
 ## Copyright
 
-Copyright © 2011 Tate Johnson. Conformist is released under the MIT license. See LICENSE for details.
+Copyright © 2016 Tate Johnson. Conformist is released under the MIT license. See LICENSE for details.
