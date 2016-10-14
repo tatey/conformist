@@ -10,12 +10,6 @@ module Conformist
       self.attributes = attributes
     end
 
-    def merge other
-      self.class.new.tap do |instance|
-        instance.attributes = attributes.merge other
-      end
-    end
-
     def == other
       other.class == self.class && attributes == other.attributes
     end
