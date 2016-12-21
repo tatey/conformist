@@ -53,6 +53,7 @@ module Conformist
 
       def conform enumerables, options = {}
         options = options.dup
+        context = options.delete(:context)
 
         Enumerator.new do |yielder|
           enumerables.each do |enumerable|
@@ -61,7 +62,7 @@ module Conformist
               next
             end
 
-            yielder.yield builder.call(self, enumerable)
+            yielder.yield builder.call(self, enumerable, context)
           end
         end
       end

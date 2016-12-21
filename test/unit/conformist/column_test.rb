@@ -50,4 +50,16 @@ class Conformist::ColumnTest < Minitest::Test
     column = Column.new :foo, 0
     assert_nil column.values_in([])
   end
+
+  def test_passes_context
+    context = {'a' => 'b'}
+    column = Column.new(:foo, 0) { |_, ctx| ctx }
+    assert_equal context, column.values_in([], context)
+  end
+
+  def test_respects_preprocessor_arity
+    context = {'a' => 'b'}
+    column = Column.new(:foo, 0, &lambda { |values| })
+    column.values_in([], context)
+  end
 end
