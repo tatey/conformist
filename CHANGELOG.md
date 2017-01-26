@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Current
+
+* Official support for Ruby 2.4.0.
+
 ## 0.2.4 / 2016-10-14
 
 * Speed up processing large amounts of columns (@splattael)
