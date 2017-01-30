@@ -262,6 +262,18 @@ column :first_name, 0 do |value|
 end
 ```
 
+It's also possible to provide a context object that is made available during preprocessing.
+
+``` ruby
+citizen = Conformist.new do
+  column :name, 0, 1 do |values, context|
+    (context[:upcase?] ? values.map(&:upcase) : values) * ' '
+  end
+end
+
+citizen.conform [['tate', 'johnson']], context: {upcase?: true}
+```
+
 ### Virtual Columns
 
 Virtual columns are not sourced from input. Omit the index to create a virtual column. Like real columns, virtual columns are included in the conformed output.
