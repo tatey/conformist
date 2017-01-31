@@ -21,7 +21,7 @@ module Conformist
       end
     end
 
-    def values_in enumerable
+    def values_in enumerable, context = nil
       enumerable = Array(enumerable)
 
       values = Array(indexes).map do |index|
@@ -35,7 +35,11 @@ module Conformist
       end
       values = values.first if values.size == 1
       if preprocessor
-        preprocessor.call values
+        if preprocessor.arity == 1
+          preprocessor.call values
+        else
+          preprocessor.call values, context
+        end
       else
         values
       end

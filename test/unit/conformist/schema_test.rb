@@ -26,7 +26,7 @@ class Conformist::SchemaTest < Minitest::Test
     definition = Class.new { extend Schema }
     definition.builder = Object
     assert_equal Object, definition.builder
-  end  
+  end
 
   def test_columns_reader
     assert_empty Class.new { extend Schema }.columns
@@ -66,7 +66,7 @@ class Conformist::SchemaTest < Minitest::Test
 
   def test_conform_calls_builders_call_method
     definition = Class.new { extend Schema }
-    definition.builder = lambda { |definition, value| value }
+    definition.builder = lambda { |definition, value, context| value }
     assert_equal [2, 4], definition.conform([1, 2]).map { |value| value * 2 }
   end
 
