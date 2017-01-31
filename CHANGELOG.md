@@ -1,7 +1,8 @@
 # CHANGELOG
 
-## Current
+## 0.2.5 / 2017-01-31
 
+* Add support for context. (@jcmfernandes)
 * Official support for Ruby 2.4.0.
 
 ## 0.2.4 / 2016-10-14
